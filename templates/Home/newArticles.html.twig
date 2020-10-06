@@ -1,0 +1,11 @@
+{% extends "Home/index.html.twig" %}
+{% block title %} {{ parent() }} - Nouvel Article{% endblock %}
+{% block main %}
+    {{ form_start(formArticle) }}
+        {{ form_row(formArticle.titre) }}
+        {{ form_row(formArticle.contenu) }}
+        {{ form_row(formArticle.user) }}
+
+    <button type="submit" class="buttonArticle">Ajouter</button>
+    {{ form_end(formArticle) }}
+{% endblock %}

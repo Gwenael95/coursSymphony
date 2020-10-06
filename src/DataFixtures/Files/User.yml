@@ -1,0 +1,25 @@
+user:
+  -
+  email: "gwen@gmail.com"
+  role: "admin"
+  password: "test"
+  nom: "marchetti"
+  prenom: "gwen"
+  -
+  email: "test@gmail.com"
+  role: "user"
+  password: "test"
+  nom: "test"
+  prenom: "test11"
+  -
+  email: "test2@gmail.com"
+  role: "user"
+  password: "test"
+  nom: "test2"
+  prenom: "test22"
+  -
+  email: "test3@gmail.com"
+  role: "admin"
+  password: "test"
+  nom: "test3"
+  prenom: "test33"

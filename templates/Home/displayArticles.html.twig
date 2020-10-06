@@ -1,0 +1,7 @@
+{% extends "Home/index.html.twig" %}
+{% block title %} {{ parent() }} - liste des Articles{% endblock %}
+{% block main %}
+    {% for item in articles %}
+        {{ item.titre }}<br>
+    {% endfor %}
+{% endblock %}

@@ -47,13 +47,13 @@ class GitlabServices
         }
         return null;
     }
+
     public function updateTeam(ObjectManager $entityManager, $id ,Team $newTeam) {
         $team = $entityManager->getRepository(Team::class)->findTeamById($id);
         $team->setName($newTeam->getName());
         $entityManager->persist($team);
         $entityManager->flush();
     }
-
 
     public function delTeamByName(ObjectManager $entityManager, $teamName ) {
         $team = $entityManager->getRepository(Team::class)->findTeamByName($teamName);

@@ -5,6 +5,13 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
 
+zeichen32_git_lab_api:
+    clients:
+        firstclient:
+            token: HNtbdHhikjxvHZqzeN-4
+            url: http://gitlab.com/
+            auth_method: http_token
+
 services:
     # default configuration for services in *this* file
     _defaults:

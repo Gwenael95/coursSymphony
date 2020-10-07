@@ -1,0 +1,18 @@
+{% extends "Home/index.html.twig" %}
+{% block title %} {{ parent() }} - équipes{% endblock %}
+{% block main %}
+    <ul>
+        {% for team in teams %}
+            <li>
+                {{ team.name|upper }}
+            </li>
+        {% endfor %}
+    </ul>
+    <ul>
+        {% for member in members %}
+            <li>
+                {{ member.username }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

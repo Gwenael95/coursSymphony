@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\EquipeRepository;
+use App\Repository\TeamRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=EquipeRepository::class)
+ * @ORM\Entity(repositoryClass=TeamRepository::class)
  */
-class Equipe
+class Team
 {
     /**
      * @ORM\Id

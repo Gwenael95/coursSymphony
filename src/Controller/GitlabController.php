@@ -61,4 +61,24 @@ class GitlabController
         //return new Response($content);*/
 
     }
+
+
+    /**
+     * @Route("/setTeam", methods={"GET"} , name="setTeam")
+     */
+    public function setTeam(): Response
+    {
+        /*$entityManager = $this->getDoctrine()->getManager();
+        $article = new Articles();
+        $article->setDateCreation(new \DateTime("now"));
+        $article->setTitre("etre ou ne pas etre");
+        $article->setContenu("livre philosophique");
+        $entityManager->persist($article);
+        $entityManager->flush();
+
+        $content = $this->render("Home/displayArticles.html.twig", ["articles" =>  [["titre"=>"etre ou ne pas etre"]]]);
+
+        //return new Response($content);*/
+
+    }
 }

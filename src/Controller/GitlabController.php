@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Team;
+use App\Form\Type\TeamSelectType;
 use App\Services\GitlabServices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\Type\TeamType;
@@ -90,7 +91,40 @@ class GitlabController  extends AbstractController
         return new Response($content);
     }
 
+
+
+
+
+
+
+
+
     /**
+     * this will create a new team thanks to a form with a textField input for team name
+     * @Route("/createTeam",  name="createTeam")
+     * @param Request $request
+     * @param GitlabServices $gitlabServices
+     * @return Response
+     */
+    public function createTeam(Request $request, GitlabServices $gitlabServices): Response
+    {
+        $team = new Team();
+        $form=$this->createForm(TeamType::class, $team);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $gitlabServices->addTeam($entityManager, $team);
+            echo "equipe ajouté<br>";
+        }
+
+        $content = $this->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+
+        return new Response($content);
+    }
+
+
+    /**
+     * this will select the team to update
      * @Route("/setTeam",  name="setTeam")
      * @param Request $request
      * @param GitlabServices $gitlabServices
@@ -98,19 +132,37 @@ class GitlabController  extends AbstractController
      */
     public function setTeam(Request $request, GitlabServices $gitlabServices): Response
     {
-        $projects = $gitlabServices->getAllProject();
+        $team = new Team();
+        $form=$this->createForm(TeamSelectType::class, $team);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $quest = $request->request->all();
+            $entityManager = $this->getDoctrine()->getManager();
+            $teamId = $gitlabServices->redirectToUpdate($entityManager, $quest);
 
-        //var_dump($projects);
-        $projectsId = $gitlabServices->getAllProjectsId();
-        var_dump($projectsId);
+            return $this->redirectToRoute('updateTeam', ["id"=>$teamId]);
 
+        }
+        $content = $this->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        return new Response($content);
+    }
+
+    /**
+     * @Route("/updateTeam/{id}",  name="updateTeam")
+     * @param Request $request
+     * @param GitlabServices $gitlabServices
+     * @param int $id
+     * @return Response
+     */
+    public function updateTeam(Request $request, GitlabServices $gitlabServices, int $id): Response
+    {
         $team = new Team();
         $form=$this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
-            $gitlabServices->addTeam($entityManager, $team);
-            echo "equipe selectionné<br>";
+            $gitlabServices->updateTeam($entityManager, $id, $team);
+            echo "équipe mise à jour<br>";
         }
 
         $content = $this->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
@@ -128,15 +180,15 @@ class GitlabController  extends AbstractController
     public function delTeam(Request $request, GitlabServices $gitlabServices): Response
     {
         $team = new Team();
-        $form=$this->createForm(TeamType::class, $team);
+        $form=$this->createForm(TeamSelectType::class, $team);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
+            $quest = $request->request->all();
             $entityManager = $this->getDoctrine()->getManager();
-            $gitlabServices->delTeam($entityManager, $team);
-            echo "equipe supprimé<br>";
+            $gitlabServices->delTeam($entityManager, $quest);
+            return $this->redirectToRoute('delTeam');
         }
         $content = $this->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
-
         return new Response($content);
     }
 

@@ -22,4 +22,10 @@ class TeamRepository extends ServiceEntityRepository
     public function findAllTeam(){
         return $this->findAll();
     }
+    public function findTeamByName(string $teamName){
+        return $this->findOneByName($teamName);
+    }
+    public function findTeamById(string $id){
+        return $this->findOneById($id);
+    }
 }

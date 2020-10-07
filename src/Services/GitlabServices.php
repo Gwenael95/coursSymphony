@@ -23,7 +23,40 @@ class GitlabServices
         $entityManager->flush();
     }
 
-    public function delTeam(ObjectManager $entityManager, $team ) {
+
+    public function delTeam(ObjectManager $entityManager, $quest ) {
+        foreach($quest as $prop=>$qst){
+            if (isset($qst["name"])) {
+                foreach ($qst["name"] as $teamName) {
+                    $team = $entityManager->getRepository(Team::class)->findTeamByName($teamName);
+                    $entityManager->remove($team);
+                }
+            }
+        }
+        $entityManager->flush();
+    }
+
+    public function redirectToUpdate(ObjectManager $entityManager, $quest ) {
+        foreach($quest as $prop=>$qst){
+            if (isset($qst["name"])) {
+                foreach ($qst["name"] as $teamName) {
+                    $team = $entityManager->getRepository(Team::class)->findTeamByName($teamName);
+                    return $team->getId();
+                }
+            }
+        }
+        return null;
+    }
+    public function updateTeam(ObjectManager $entityManager, $id ,Team $newTeam) {
+        $team = $entityManager->getRepository(Team::class)->findTeamById($id);
+        $team->setName($newTeam->getName());
+        $entityManager->persist($team);
+        $entityManager->flush();
+    }
+
+
+    public function delTeamByName(ObjectManager $entityManager, $teamName ) {
+        $team = $entityManager->getRepository(Team::class)->findTeamByName($teamName);
         $entityManager->remove($team);
         $entityManager->flush();
     }

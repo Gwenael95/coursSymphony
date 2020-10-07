@@ -64,10 +64,18 @@ class GitlabServices
 
     public function getMerges(){
         $merges = $this->client->mergeRequests()->all();
-        $merges = $this->client->mergeRequests()->approvalState(72732854, 3);
-
+        $array = [];
+        foreach ($merges as $merge){
+            if ($merge["merge_status"]==="can_be_merged") {
+                array_push($array, ["status" => $merge["merge_status"], "author" => $merge["author"],
+                    "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"]]);
+            }
+        }
+        /*
         var_dump($merges);
-
-        return $merges;
+        echo "<br><br>merges simple = ";
+        var_dump($array);
+        */
+        return $array;
     }
 }

@@ -31,7 +31,22 @@ class GitlabController  extends AbstractController
         echo "<br><br>";
          $gitlabServices->getMerges();
 
-        $content = $this->render("Home/testGitlab.html.twig", array("test" => test));
+        $content = $this->render("Home/testGitlab.html.twig", array("test" => "test"));
+
+        return new Response($content);
+    }
+
+
+    /**
+     * @Route("/getMerges",  name="getMerges")
+     * @param GitlabServices $gitlabServices
+     * @return Response
+     */
+    public function getMerges( GitlabServices $gitlabServices): Response
+    {
+        $merges = $gitlabServices->getMerges();
+
+        $content = $this->render("Home/displayMerges.html.twig", array("merges" => $merges));
 
         return new Response($content);
     }

@@ -1,0 +1,11 @@
+{% extends "Home/index.html.twig" %}
+{% block title %} {{ parent() }} - test{% endblock %}
+{% block main %}
+    <ul>
+    {% for merge in merges %}
+        <li>
+            auteur : {{ merge.author.name }}. {{ merge.status }}. up={{ merge.upvotes }}; down={{ merge.downvotes }}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

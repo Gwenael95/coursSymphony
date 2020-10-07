@@ -5,7 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Articles;
 use App\Entity\User;
-use App\Form\Type\ArticleType;
+use App\Form\Type\TeamType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,7 +41,7 @@ class ArticleController extends AbstractController
         $article = new Articles();
         //$article->setTitre("etre ou ne pas etre");
         //$article->setContenu("livre philosophique");
-        $form=$this->createForm(ArticleType::class, $article);
+        $form=$this->createForm(TeamType::class, $article);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();

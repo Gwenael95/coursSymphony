@@ -3,11 +3,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Articles;
+use App\Entity\Team;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\Type\TeamType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class GitlabController
+class GitlabController  extends AbstractController
 {
     /**
      * @Route("/mergeRequest", methods={"GET"} , name="mergeRequest")
@@ -64,21 +67,26 @@ class GitlabController
 
 
     /**
-     * @Route("/setTeam", methods={"GET"} , name="setTeam")
+     * @Route("/setTeam",  name="setTeam")
+     * @param Request $request
+     * @return Response
      */
-    public function setTeam(): Response
+    public function setTeam(Request $request): Response
     {
-        /*$entityManager = $this->getDoctrine()->getManager();
-        $article = new Articles();
-        $article->setDateCreation(new \DateTime("now"));
-        $article->setTitre("etre ou ne pas etre");
-        $article->setContenu("livre philosophique");
-        $entityManager->persist($article);
-        $entityManager->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        $team = new Team();
+        $form=$this->createForm(TeamType::class, $team);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($team);
+            $entityManager->flush();
+            echo "equipe selectionné<br>";
+        }
 
-        $content = $this->render("Home/displayArticles.html.twig", ["articles" =>  [["titre"=>"etre ou ne pas etre"]]]);
+        $content = $this->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
 
-        //return new Response($content);*/
+        return new Response($content);
 
     }
 }

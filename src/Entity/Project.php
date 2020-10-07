@@ -29,6 +29,11 @@ class Project
      */
     private $team;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $projectId;
+
     public function __construct()
     {
         $this->team = new ArrayCollection();
@@ -73,6 +78,18 @@ class Project
         if ($this->team->contains($team)) {
             $this->team->removeElement($team);
         }
+
+        return $this;
+    }
+
+    public function getProjectId(): ?int
+    {
+        return $this->projectId;
+    }
+
+    public function setProjectId(int $projectId): self
+    {
+        $this->projectId = $projectId;
 
         return $this;
     }

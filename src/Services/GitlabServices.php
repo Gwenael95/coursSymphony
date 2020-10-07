@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Entity\Project;
 use App\Entity\Team;
 use Doctrine\Persistence\ObjectManager;
 use Gitlab\Client;
@@ -34,6 +35,8 @@ class GitlabServices
     private function getClient(){
         return $client = $this->client->authenticate('HNtbdHhikjxvHZqzeN-4', Client::AUTH_HTTP_TOKEN);
     }
+
+
 
     public function getAllProject(){
         $client = $this->getClient();
@@ -68,14 +71,33 @@ class GitlabServices
         foreach ($merges as $merge){
             if ($merge["merge_status"]==="can_be_merged") {
                 array_push($array, ["status" => $merge["merge_status"], "author" => $merge["author"],
-                    "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"]]);
+                    "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"], "id"=>$merge["project_id"]]);
             }
         }
         /*
         var_dump($merges);
         echo "<br><br>merges simple = ";
         var_dump($array);
-        */
+*/
         return $array;
+    }
+
+    public function assignTeamProject(string $teamName, ObjectManager $entityManager, $merges){
+        $project = new Project();
+        $project->setProjectId($merges[0]["id"]);
+        $project->setName("test");
+
+        $team = new Team();
+        $team->setName("testTeam");
+        $project->addTeam($team);
+        $entityManager->persist($project);
+        $entityManager->persist($team);
+
+        $entityManager->flush();
+        //return $entityManager->getRepository(Project::class)->findProjectFromTeam($teamName);
+    }
+
+    public function getMergesFromTeam( ObjectManager $entityManager, string $teamName){
+        return $entityManager->getRepository(Project::class)->findProjectFromTeam($teamName);
     }
 }

@@ -26,18 +26,20 @@ class GitlabController
         */
         // Token authentication
         /*$client = new Gitlab\Client();
-        $client->authenticate('your_http_token', Gitlab\Client::AUTH_HTTP_TOKEN);
+        $client->authenticate('HNtbdHhikjxvHZqzeN-4', Gitlab\Client::AUTH_HTTP_TOKEN);
 
         // OAuth2 authentication
         $client = new Gitlab\Client();
-        $client->authenticate('your_oauth_token', Gitlab\Client::AUTH_OAUTH_TOKEN);
+        $client->authenticate('HNtbdHhikjxvHZqzeN-4', Gitlab\Client::AUTH_OAUTH_TOKEN);
 
         // An example API call
         $project = $client->projects()->create('My Project', [
             'description' => 'This is a project',
             'issues_enabled' => false,
-        ]);*/
-        //return new Response($content);
+        ]);
+        var_dump($project);
+
+        return new Response("a");*/
     }
 
 
@@ -57,6 +59,6 @@ class GitlabController
         $content = $this->render("Home/displayArticles.html.twig", ["articles" =>  [["titre"=>"etre ou ne pas etre"]]]);
 
         //return new Response($content);*/
-        
+
     }
 }

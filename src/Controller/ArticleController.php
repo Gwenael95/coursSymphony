@@ -56,9 +56,6 @@ class ArticleController extends AbstractController
             );
         }*/
 
-        $browser = new \Buzz\Browser();
-        $client = new \GitLab\Client($browser, 'your-key', 'http://your-gitlab-server.com');
-
         $content = $this->render("Home/newArticles.html.twig", array("formArticle"=>$form->createView()));
 
         return new Response($content);

@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+use Gitlab\Client;
+
 class GitlabController  extends AbstractController
 {
     /**
@@ -43,6 +46,7 @@ class GitlabController  extends AbstractController
         var_dump($project);
 
         return new Response("a");*/
+
     }
 
 
@@ -73,12 +77,12 @@ class GitlabController  extends AbstractController
      */
     public function setTeam(Request $request): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
         $team = new Team();
         $form=$this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
+
             $entityManager->persist($team);
             $entityManager->flush();
             echo "equipe selectionné<br>";

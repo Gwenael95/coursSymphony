@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\TeamRepository;
+use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=TeamRepository::class)
+ * @ORM\Entity(repositoryClass=ProjectRepository::class)
  */
-class Team
+class Project
 {
     /**
      * @ORM\Id
@@ -25,13 +25,13 @@ class Team
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="team")
+     * @ORM\ManyToMany(targetEntity=Team::class, inversedBy="projects")
      */
-    private $projects;
+    private $team;
 
     public function __construct()
     {
-        $this->projects = new ArrayCollection();
+        $this->team = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,28 +52,26 @@ class Team
     }
 
     /**
-     * @return Collection|Project[]
+     * @return Collection|Team[]
      */
-    public function getProjects(): Collection
+    public function getTeam(): Collection
     {
-        return $this->projects;
+        return $this->team;
     }
 
-    public function addProject(Project $project): self
+    public function addTeam(Team $team): self
     {
-        if (!$this->projects->contains($project)) {
-            $this->projects[] = $project;
-            $project->addTeam($this);
+        if (!$this->team->contains($team)) {
+            $this->team[] = $team;
         }
 
         return $this;
     }
 
-    public function removeProject(Project $project): self
+    public function removeTeam(Team $team): self
     {
-        if ($this->projects->contains($project)) {
-            $this->projects->removeElement($project);
-            $project->removeTeam($this);
+        if ($this->team->contains($team)) {
+            $this->team->removeElement($team);
         }
 
         return $this;

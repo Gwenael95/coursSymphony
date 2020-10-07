@@ -2,7 +2,7 @@
 {% block title %} {{ parent() }} - choix de l'equipe{% endblock %}
 {% block main %}
     {{ form_start(formTeam) }}
-    {{ form_row(formTeam.name) }}
+        {{ form_row(formTeam.name) }}
 
     <button type="submit" class="buttonArticle">Ajouter</button>
     {{ form_end(formTeam) }}

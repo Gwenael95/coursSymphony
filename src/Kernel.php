@@ -35,4 +35,11 @@ class Kernel extends BaseKernel
             (require $path)($routes->withPath($path), $this);
         }
     }
+
+    public function registerBundles()
+    {
+        $bundles = array(
+            new Zeichen32\GitLabApiBundle\Zeichen32GitLabApiBundle(),
+        );
+    }
 }

@@ -4,6 +4,12 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+        {# templates/base.html.twig #}
+
+        {# beware that the blocks in your template may be named different #}
+        {% block head_css %}
+            <!-- Copy CSS from https://getbootstrap.com/docs/4.4/getting-started/introduction/#css -->
+        {% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}

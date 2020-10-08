@@ -124,6 +124,7 @@ class GitlabController  extends AbstractController
         $content = $this->render("Home/displayMerges.html.twig", array("merges" => $merges));
         return new Response($content);
     }
+         return $this->render("Home/displayMerges.html.twig", array("merges" => $merges));
 
 
 

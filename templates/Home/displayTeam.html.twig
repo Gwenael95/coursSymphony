@@ -4,15 +4,9 @@
     <ul>
         {% for team in teams %}
             <li>
-                {{ team.name|upper }}
+                {{ team.teamName|upper }}
             </li>
         {% endfor %}
     </ul>
-    <ul>
-        {% for member in members %}
-            <li>
-                {{ member.username }}
-            </li>
-        {% endfor %}
-    </ul>
+
 {% endblock %}

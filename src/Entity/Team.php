@@ -22,7 +22,7 @@ class Team
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $teamName;
 
     /**
      * @ORM\ManyToMany(targetEntity=Project::class, mappedBy="team")
@@ -39,14 +39,14 @@ class Team
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTeamName(): ?string
     {
-        return $this->name;
+        return $this->teamName;
     }
 
-    public function setName(string $name): self
+    public function setTeamName(string $teamName): self
     {
-        $this->name = $name;
+        $this->teamName = $teamName;
 
         return $this;
     }

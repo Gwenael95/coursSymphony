@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\Team;
-use App\Form\TeamType;
+use App\Form\Type\CreateTeamType;
 use App\Form\Type\TeamProjectAssignType;
 use App\Form\Type\TeamSelectMultipleType;
 use App\Services\GitlabServices;
@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 /**
- * @Route("/team")
+ * @Route("/")
  */
 class TeamController extends AbstractController
 {
@@ -26,7 +26,7 @@ class TeamController extends AbstractController
     private $twig;
 
     /**
-     * DefaultController constructor.
+     * TeamController constructor.
      * @param Environment $twig
      */
     public function __construct(Environment $twig)
@@ -35,37 +35,40 @@ class TeamController extends AbstractController
     }
 
 
-
     /**
      * this will create a new team thanks to a form with a textField input for team name
      * @Route("/createTeam",  name="createTeam")
      * @param Request $request
      * @param GitlabServices $gitlabServices
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function createTeam(Request $request, GitlabServices $gitlabServices): Response
     {
         $team = new Team();
-        $form=$this->createForm(\App\Form\Type\TeamType::class, $team);
+        $form=$this->createForm(CreateTeamType::class, $team);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $gitlabServices->addTeam($this->getDoctrine()->getManager(), $team);
-            echo "equipe ajouté<br>";
         }
 
         $content = $this->twig->render("Home/createTeam.html.twig", array("formTeam"=>$form->createView()));
-
         return new Response($content);
     }
 
 
     /**
-     * this function will select the team to update, redirect to updateTeam with team id
+     * this function will select the team to update, before to redirect to 'updateTeam' with team id
      * to update it
      * @Route("/setTeam",  name="setTeam")
      * @param Request $request
      * @param GitlabServices $gitlabServices
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function setTeam(Request $request, GitlabServices $gitlabServices): Response
     {
@@ -79,6 +82,7 @@ class TeamController extends AbstractController
         $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
+
     /**
      * this function is used to update a team after having select it (in setTeam)
      * @Route("/updateTeam/{id}",  name="updateTeam")
@@ -86,11 +90,14 @@ class TeamController extends AbstractController
      * @param GitlabServices $gitlabServices
      * @param int $id
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function updateTeam(Request $request, GitlabServices $gitlabServices, int $id): Response
     {
         $team = new Team();
-        $form=$this->createForm(TeamType::class, $team);
+        $form=$this->createForm(CreateTeamType::class, $team);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $gitlabServices->updateTeam($this->getDoctrine()->getManager(), $id, $team);
@@ -108,6 +115,9 @@ class TeamController extends AbstractController
      * @param Request $request
      * @param GitlabServices $gitlabServices
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function delTeam(Request $request, GitlabServices $gitlabServices): Response
     {
@@ -129,6 +139,9 @@ class TeamController extends AbstractController
      * @param Request $request
      * @param GitlabServices $gitlabServices
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function assignProject(Request $request, GitlabServices $gitlabServices): Response
     {

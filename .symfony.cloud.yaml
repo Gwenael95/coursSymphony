@@ -1,0 +1,60 @@
+name: app
+
+type: php:7.4
+
+runtime:
+    extensions:
+        - apcu
+        - mbstring
+        - sodium
+        - ctype
+        - iconv
+        
+
+#variables:
+#    php:
+#        # uncomment on PHP 7.4+
+#        #opcache.preload: /app/config/preload.php
+
+build:
+    flavor: none
+
+web:
+    locations:
+        "/":
+            root: "public"
+            expires: 1h
+            passthru: "/index.php"
+
+disk: 512
+
+mounts:
+    "/var": { source: local, source_path: var }
+
+hooks:
+    build: |
+        set -x -e
+
+        curl -s https://get.symfony.com/cloud/configurator | (>&2 bash)
+        
+        (>&2 symfony-build)
+
+    deploy: |
+        set -x -e
+
+        (>&2 symfony-deploy)
+
+timezone: Europe/Paris
+
+crons:
+    update_repo:
+        # every day at 1h15 AM
+        #spec: 15 1 * * *
+        spec: 24 * * * *
+
+        cmd: php bin/console app:sendMail
+
+    #update_doc:
+        # every day at 3h45 AM
+        #spec: 45 3 * * *
+        #cmd: croncape bin/console app:doc-update

@@ -10,7 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class TeamType extends AbstractType
+class CreateTeamType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options){
         $builder->add("teamName", TextType::class, ["label" => 'nom de l\'équipe']);

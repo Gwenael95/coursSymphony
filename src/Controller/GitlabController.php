@@ -3,14 +3,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Project;
-use App\Entity\Team;
-use App\Form\Type\TeamProjectAssignType;
-use App\Form\Type\TeamSelectMultipleType;
 use App\Form\Type\TeamSelectUniqueType;
 use App\Services\GitlabServices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Form\Type\TeamType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +20,7 @@ class GitlabController  extends AbstractController
     private $twig;
 
     /**
-     * DefaultController constructor.
+     * GitlabController constructor.
      * @param Environment $twig
      */
     public function __construct(Environment $twig)
@@ -34,16 +29,18 @@ class GitlabController  extends AbstractController
     }
 
 
-
     /**
      * this function will select the team to display their merge requests,
      * redirect to getMergesByTeam/id with team id
-     * @Route("/selectTeam",  name="selectTeam")
+     * @Route("/selectTeamMerges",  name="selectTeamMerges")
      * @param Request $request
      * @param GitlabServices $gitlabServices
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function selectTeam(Request $request, GitlabServices $gitlabServices): Response
+    public function selectTeamMerges(Request $request, GitlabServices $gitlabServices): Response
     {
         $form=$this->createForm(TeamSelectUniqueType::class/*, $team*/);
         $form->handleRequest($request);
@@ -54,12 +51,16 @@ class GitlabController  extends AbstractController
         $content = $this->twig->render("Home/selectTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
+
     /**
-     * this function get all merges depending of the selected team (in selectTeam page)
+     * this function get all merges depending of the selected team (in 'selectTeamMerges' page)
      * @Route("/getMergesByTeam/{id}",  name="getMergesByTeam")
      * @param GitlabServices $gitlabServices
      * @param int $id
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function getMergesByTeam( GitlabServices $gitlabServices, int $id): Response
     {
@@ -76,6 +77,9 @@ class GitlabController  extends AbstractController
      * @Route("/getMerges",  name="getMerges")
      * @param GitlabServices $gitlabServices
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function getMerges( GitlabServices $gitlabServices): Response
     {
@@ -91,6 +95,9 @@ class GitlabController  extends AbstractController
      * @Route("/getTeam", methods={"GET"} , name="getTeam")
      * @param GitlabServices $gitlabServices
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function getTeam(GitlabServices $gitlabServices): Response
     {
@@ -105,16 +112,14 @@ class GitlabController  extends AbstractController
      * @Route("/getProject",  name="getProject")
      * @param GitlabServices $gitlabServices
      * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function getProject( GitlabServices $gitlabServices, \Swift_Mailer $mailer): Response
+    public function getProject( GitlabServices $gitlabServices): Response
     {
         $projects = $gitlabServices->getAllProjectInDB($this->getDoctrine()->getManager());
         $content = $this->twig->render("Home/gitlabListProjects.html.twig", array("projects" => $projects));
         return new Response($content);
     }
-
-
-
-
-
 }

@@ -1,10 +1,11 @@
 {% extends "Home/index.html.twig" %}
 {% block title %} {{ parent() }} - test{% endblock %}
 {% block main %}
-    <ul>
+
+    <ul class="list-group">
     {% for merge in merges %}
-        <li>
-            auteur : {{ merge.author.name }}. {{ merge.status }}. up={{ merge.upvotes }}; down={{ merge.downvotes }}
+        <li class="list-group-item">
+            auteur : {{ merge.author.name }}. {{ merge.status }}. <span class="badge badge-primary badge-pill">up={{ merge.upvotes }}; down={{ merge.downvotes }}</span>
         </li>
     {% endfor %}
     </ul>

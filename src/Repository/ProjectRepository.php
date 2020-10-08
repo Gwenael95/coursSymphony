@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Project;
+use App\Entity\Team;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,14 +20,22 @@ class ProjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Project::class);
     }
 
-
-    public function findProjectFromTeam(string $teamName)
+    public function findAllProject()
     {
-        return $this->findOneByTeam($teamName);
+        return $this->findAll();
     }
+
+    public function findProjectFromTeam(Team $team)
+    {
+        return $this->findOneByTeam($team);
+    }
+
     public function findProjectByprojectName(string $projectName)
     {
         return $this->findOneByName($projectName);
     }
-
+    public function findOneProjectByProjectId(string $id)
+    {
+        return $this->findOneByProjectId($id);
+    }
 }

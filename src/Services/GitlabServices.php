@@ -53,6 +53,16 @@ class GitlabServices
         return null;
     }
 
+    public function redirectToSelect(ObjectManager $entityManager, $quest ) {
+        foreach($quest as $prop=>$qst){
+            if (isset($qst["teamName"])) {
+                $team = $entityManager->getRepository(Team::class)->findTeamByTeamName($qst["teamName"]);
+                return $team->getId();
+            }
+        }
+        return null;
+    }
+
     public function updateTeam(ObjectManager $entityManager, $id ,Team $newTeam) {
         $team = $entityManager->getRepository(Team::class)->findTeamById($id);
         $team->setTeamName($newTeam->getTeamName());
@@ -89,9 +99,7 @@ class GitlabServices
                     }
                 }
             }
-
         }
-
         $entityManager->flush();
 
         //return $entityManager->getRepository(Project::class)->findProjectFromTeam($teamName);
@@ -105,6 +113,10 @@ class GitlabServices
         return $client->projects()->all(["owned" => true,]);
     }
 
+    public function getAllProjectInDB(ObjectManager $entityManager){
+        return $entityManager->getRepository(Project::class)->findAllProject();;
+    }
+
     public function getAllProjectsId(){
         $projects = $this->getAllProject();
         $projectsId = [];
@@ -113,6 +125,26 @@ class GitlabServices
         }
         return $projectsId;
     }
+
+
+    /**
+     * This function get all project on gitlab and save them in database
+     * @param ObjectManager $entityManager
+     */
+    public function updateProject(ObjectManager $entityManager) {
+        $gitProjects = $this->getAllProject();
+        foreach ($gitProjects as $project){
+            $newProject= $entityManager->getRepository(Project::class)->findOneProjectByProjectId($project["id"]);
+            if ($newProject==null){
+                $newProject = new Project();
+            }
+            $newProject->setName($project["name"]);
+            $newProject->setProjectId($project["id"]);
+            $entityManager->persist($newProject);
+        }
+        $entityManager->flush();
+    }
+
 
     public function getAllMemberFromProject(int $projectId){
         //$members = $this->client->projects()->allMembers(21522457);
@@ -129,6 +161,7 @@ class GitlabServices
 
     public function getMerges(){
         $merges = $this->client->mergeRequests()->all();
+
         $array = [];
         foreach ($merges as $merge){
             if ($merge["merge_status"]==="can_be_merged") {
@@ -136,17 +169,26 @@ class GitlabServices
                     "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"], "id"=>$merge["project_id"]]);
             }
         }
-        /*
-        var_dump($merges);
-        echo "<br><br>merges simple = ";
-        var_dump($array);
-*/
         return $array;
     }
 
 
 
-    public function getMergesFromTeam( ObjectManager $entityManager, string $teamName){
-        return $entityManager->getRepository(Project::class)->findProjectFromTeam($teamName);
+    public function getMergesFromTeam( ObjectManager $entityManager, int $id){
+        $team = $entityManager->getRepository(Team::class)->findTeamById($id);
+        $projects = $team->getProjects();
+        $merges = $this->getMerges();
+        $teamMerges = [];
+        foreach ($projects as $p) {
+            foreach ($merges as $m){
+                if ($m["id"]==$p->getProjectId()){
+                    array_push($teamMerges, array_merge($m, ["projectName"=>$p->getName()]));
+                    break;
+                }
+            }
+        }
+        //var_dump($teamMerges);
+        return $teamMerges;
     }
+
 }

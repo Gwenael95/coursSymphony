@@ -1,0 +1,9 @@
+{% extends "Home/index.html.twig" %}
+{% block title %} {{ parent() }} - liste des projets{% endblock %}
+{% block main %}
+    <ul>
+    {% for project in projects %}
+        <li>nom : {{ project.name }}, id du projet sur git : {{ project.projectId }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

@@ -4,7 +4,7 @@
     <ul>
     {% for merge in merges %}
         <li>
-            auteur : {{ merge.author.name }}. {{ merge.status }}. up={{ merge.upvotes }}; down={{ merge.downvotes }}
+            merges du projet : {{ merge.projectName }} . auteur : {{ merge.author.name }}. {{ merge.status }}. up={{ merge.upvotes }}; down={{ merge.downvotes }}
         </li>
     {% endfor %}
     </ul>

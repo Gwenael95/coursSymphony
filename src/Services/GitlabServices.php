@@ -169,7 +169,8 @@ class GitlabServices
         foreach ($merges as $merge){
             if ($merge["state"]==="opened") {
                 array_push($array, ["status" => $merge["merge_status"], "author" => $merge["author"],
-                    "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"], "id"=>$merge["project_id"]]);
+                    "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"], "id"=>$merge["project_id"],
+                    "target"=>$merge["target_branch"], "source"=>$merge["source_branch"]]);
             }
         }
         return $array;

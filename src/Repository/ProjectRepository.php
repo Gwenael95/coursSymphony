@@ -24,4 +24,9 @@ class ProjectRepository extends ServiceEntityRepository
     {
         return $this->findOneByTeam($teamName);
     }
+    public function findProjectByprojectName(string $projectName)
+    {
+        return $this->findOneByName($projectName);
+    }
+
 }

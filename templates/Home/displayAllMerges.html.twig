@@ -1,12 +1,7 @@
 {% extends "Home/index.html.twig" %}
-{% block main %}
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">
-            <h1>#BalanceTaMR</h1>
-        </a>
-    </nav>
-    {% block title %} {{ parent() }} - all merges{% endblock %}
+{% block title %} {{ parent() }} - all merges{% endblock %}
 
+{% block main %}
     <ul class="list-group" style="
     align-items: center">
         {% for merge in merges %}

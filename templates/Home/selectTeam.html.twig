@@ -1,0 +1,11 @@
+{% extends "Home/index.html.twig" %}
+{% block title %} {{ parent() }} - création de l'équipe{% endblock %}
+{% block main %}
+    Choisissez l'équipe dont vous souhaitez voir les MR.
+    {{ form_start(formTeam) }}
+
+    {{ form_row(formTeam.teamName) }}
+
+    <button type="submit" class="buttonArticle">Envoyer</button>
+    {{ form_end(formTeam) }}
+{% endblock %}

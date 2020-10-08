@@ -1,0 +1,11 @@
+{% extends "Home/index.html.twig" %}
+{% block title %} {{ parent() }} - création de l'équipe{% endblock %}
+{% block main %}
+    Saisir le nom de la nouvelle l'équipe.
+    {{ form_start(formTeam) }}
+
+    {{ form_row(formTeam.teamName) }}
+
+    <button type="submit" class="buttonArticle">Ajouter</button>
+    {{ form_end(formTeam) }}
+{% endblock %}

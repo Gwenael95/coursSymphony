@@ -40,8 +40,21 @@ class GitlabServices
         }
         $entityManager->flush();
     }
+    public function delTeamByName(ObjectManager $entityManager, $teamName ) {
+        $team = $entityManager->getRepository(Team::class)->findTeamByName($teamName);
+        $entityManager->remove($team);
+        $entityManager->flush();
+    }
 
-    public function redirectToUpdate(ObjectManager $entityManager, $quest ) {
+    public function updateTeam(ObjectManager $entityManager, $id ,Team $newTeam) {
+        $team = $entityManager->getRepository(Team::class)->findTeamById($id);
+        $team->setTeamName($newTeam->getTeamName());
+        $entityManager->persist($team);
+        $entityManager->flush();
+    }
+
+
+    public function getTeamIdSelectMultiple(ObjectManager $entityManager, $quest ) {
         foreach($quest as $prop=>$qst){
             if (isset($qst["teamName"])) {
                 foreach ($qst["teamName"] as $teamName) {
@@ -53,7 +66,7 @@ class GitlabServices
         return null;
     }
 
-    public function redirectToSelect(ObjectManager $entityManager, $quest ) {
+    public function getTeamIdSelectUnique(ObjectManager $entityManager, $quest ) {
         foreach($quest as $prop=>$qst){
             if (isset($qst["teamName"])) {
                 $team = $entityManager->getRepository(Team::class)->findTeamByTeamName($qst["teamName"]);
@@ -61,19 +74,6 @@ class GitlabServices
             }
         }
         return null;
-    }
-
-    public function updateTeam(ObjectManager $entityManager, $id ,Team $newTeam) {
-        $team = $entityManager->getRepository(Team::class)->findTeamById($id);
-        $team->setTeamName($newTeam->getTeamName());
-        $entityManager->persist($team);
-        $entityManager->flush();
-    }
-
-    public function delTeamByName(ObjectManager $entityManager, $teamName ) {
-        $team = $entityManager->getRepository(Team::class)->findTeamByName($teamName);
-        $entityManager->remove($team);
-        $entityManager->flush();
     }
 
     public function getAllTeam(ObjectManager $entityManager){
@@ -84,12 +84,7 @@ class GitlabServices
         return $entityManager->getRepository(Team::class)->findTeamById($id);
     }
 
-
-
     public function assignTeamProject( ObjectManager $entityManager,/*string $teamName,*/ $quest){
-        /*$team = $entityManager->getRepository(Team::class)->findTeamByTeamName($teamName);
-        $entityManager->persist($team);
-*/
         foreach($quest as $prop=>$qst){
             if (isset($qst["teamName"])) {
                 $team = $entityManager->getRepository(Team::class)->findTeamByTeamName($qst["teamName"]);
@@ -104,8 +99,6 @@ class GitlabServices
             }
         }
         $entityManager->flush();
-
-        //return $entityManager->getRepository(Project::class)->findProjectFromTeam($teamName);
     }
 
 
@@ -175,8 +168,6 @@ class GitlabServices
         }
         return $array;
     }
-
-
 
     public function getMergesFromTeam( ObjectManager $entityManager, int $id){
         $team = $entityManager->getRepository(Team::class)->findTeamById($id);

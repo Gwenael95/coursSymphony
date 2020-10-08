@@ -10,10 +10,22 @@
     <body>
         <header>
             {% block header %}{% endblock %}
-            <nav class="navbar navbar-dark bg-dark">
+            <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
                 <a class="navbar-brand" href="#">
                     <h1>#BalanceTaMR</h1>
                 </a>
+                <div>
+                    <a href="{{ path('getMerges') }}">Les merges</a>
+                    <a href="{{ path('getProject') }}">Les projets</a>
+                    <a href="{{ path('assignProject') }}">Assigner des Projets</a>
+                    <a href="{{ path('createTeam') }}">Créer équipe</a>
+
+                    <a href="{{ path('setTeam') }}">Mettre à jour équipe</a>
+                    <a href="{{ path('delTeam') }}">Supprimer équipe</a>
+                    <a href="{{ path('getTeam') }}">voir les équipes</a>
+                    <a href="{{ path('selectTeam') }}">voir MR d'une équipe</a>
+
+                </div>
             </nav>
         </header>
         <main>

@@ -32,60 +32,6 @@ class GitlabController  extends AbstractController
     {
         $this->twig = $twig;
     }
-    /**
-     * @Route("/getMerges",  name="getMerges")
-     * @param GitlabServices $gitlabServices
-     * @return Response
-     */
-    public function getMerges( GitlabServices $gitlabServices): Response
-    {
-        $merges = $gitlabServices->getMerges();
-        $content = $this->twig->render("Home/displayAllMerges.html.twig", array("merges" => $merges));
-        return new Response($content);
-    }
-
-
-
-    /**
-     * this function list only all projects in database
-     * @Route("/getProject",  name="getProject")
-     * @param GitlabServices $gitlabServices
-     * @return Response
-     */
-    public function getProject( GitlabServices $gitlabServices): Response
-    {
-        $projects = $gitlabServices->getAllProjectInDB($this->getDoctrine()->getManager());
-        $content = $this->twig->render("Home/gitlabListProjects.html.twig", array("projects" => $projects));
-        return new Response($content);
-    }
-
-
-    /**
-     * this function allow to assign project to a team
-     * @Route("/assignProject",  name="assignProject")
-     * @param Request $request
-     * @param GitlabServices $gitlabServices
-     * @return Response
-     */
-    public function assignProject(Request $request, GitlabServices $gitlabServices): Response
-    {
-        //$merges = $gitlabServices->getMerges();
-        //$gitlabServices->assignTeamProject("testTeam", $entityManager, $merges);
-        //$merges = $gitlabServices->getMergesFromTeam($teamName, $entityManager);
-        //$content = $this->twig->render("Home/displayMerges.html.twig", array("merges" => $merges));
-
-        $gitlabServices->updateProject($this->getDoctrine()->getManager());
-        $team = new Team();
-        $project = new Project();
-        $form=$this->createForm(TeamProjectAssignType::class, [$team, $project]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
-            $gitlabServices->assignTeamProject($this->getDoctrine()->getManager(),  $request->request->all());
-            echo "assignation des projet réussi<br>";
-        }
-        $content = $this->twig->render("Home/gitlabAssignProject.html.twig", array("formTeam"=>$form->createView()));
-        return new Response($content);
-    }
 
 
 
@@ -102,13 +48,12 @@ class GitlabController  extends AbstractController
         $form=$this->createForm(TeamSelectUniqueType::class/*, $team*/);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $teamId = $gitlabServices->redirectToSelect($this->getDoctrine()->getManager(), $request->request->all());
+            $teamId = $gitlabServices->getTeamIdSelectUnique($this->getDoctrine()->getManager(), $request->request->all());
             return $this->redirectToRoute('getMergesByTeam', ["id"=>$teamId]);
         }
-        $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/selectTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
-
     /**
      * this function get all merges depending of the selected team (in selectTeam page)
      * @Route("/getMergesByTeam/{id}",  name="getMergesByTeam")
@@ -122,6 +67,48 @@ class GitlabController  extends AbstractController
         $merges = $gitlabServices->getMergesFromTeam($entityManager, $id);
         $content = $this->twig->render("Home/displayMerges.html.twig", array("merges" => $merges,
             "team"=>$gitlabServices->getTeamById($entityManager, $id)));
+        return new Response($content);
+    }
+
+
+    /**
+     * this function get all merges from our projects
+     * @Route("/getMerges",  name="getMerges")
+     * @param GitlabServices $gitlabServices
+     * @return Response
+     */
+    public function getMerges( GitlabServices $gitlabServices): Response
+    {
+        $merges = $gitlabServices->getMerges();
+        $content = $this->twig->render("Home/displayAllMerges.html.twig", array("merges" => $merges));
+        return new Response($content);
+    }
+
+
+    /**
+     * this function display a team list from database
+     * @Route("/getTeam", methods={"GET"} , name="getTeam")
+     * @param GitlabServices $gitlabServices
+     * @return Response
+     */
+    public function getTeam(GitlabServices $gitlabServices): Response
+    {
+        $teams = $gitlabServices->getAllTeam($this->getDoctrine()->getManager());
+        $content = $this->twig->render("Home/displayTeam.html.twig", ["teams" =>  $teams] );
+        return new Response($content);
+    }
+
+
+    /**
+     * this function list only all projects in database
+     * @Route("/getProject",  name="getProject")
+     * @param GitlabServices $gitlabServices
+     * @return Response
+     */
+    public function getProject( GitlabServices $gitlabServices): Response
+    {
+        $projects = $gitlabServices->getAllProjectInDB($this->getDoctrine()->getManager());
+        $content = $this->twig->render("Home/gitlabListProjects.html.twig", array("projects" => $projects));
         return new Response($content);
     }
 
@@ -148,7 +135,7 @@ class GitlabController  extends AbstractController
             echo "equipe ajouté<br>";
         }
 
-        $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/createTeam.html.twig", array("formTeam"=>$form->createView()));
 
         return new Response($content);
     }
@@ -168,13 +155,12 @@ class GitlabController  extends AbstractController
         $form=$this->createForm(TeamSelectMultipleType::class, $team);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $teamId = $gitlabServices->redirectToUpdate($this->getDoctrine()->getManager(), $request->request->all());
+            $teamId = $gitlabServices->getTeamIdSelectMultiple($this->getDoctrine()->getManager(), $request->request->all());
             return $this->redirectToRoute('updateTeam', ["id"=>$teamId]);
         }
         $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
-
     /**
      * this function is used to update a team after having select it (in setTeam)
      * @Route("/updateTeam/{id}",  name="updateTeam")
@@ -214,21 +200,31 @@ class GitlabController  extends AbstractController
             $gitlabServices->delTeam($this->getDoctrine()->getManager(), $request->request->all());
             return $this->redirectToRoute('delTeam');
         }
-        $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/delTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
 
 
     /**
-     * this function display a team list from database
-     * @Route("/getTeam", methods={"GET"} , name="getTeam")
+     * this function allow to assign project to a team
+     * @Route("/assignProject",  name="assignProject")
+     * @param Request $request
      * @param GitlabServices $gitlabServices
      * @return Response
      */
-    public function getTeam(GitlabServices $gitlabServices): Response
+    public function assignProject(Request $request, GitlabServices $gitlabServices): Response
     {
-        $teams = $gitlabServices->getAllTeam($this->getDoctrine()->getManager());
-        $content = $this->twig->render("Home/displayTeam.html.twig", ["teams" =>  $teams] );
+        $gitlabServices->updateProject($this->getDoctrine()->getManager());
+        $team = new Team();
+        $project = new Project();
+        $form=$this->createForm(TeamProjectAssignType::class, [$team, $project]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $gitlabServices->assignTeamProject($this->getDoctrine()->getManager(),  $request->request->all());
+            echo "assignation des projet réussi<br>";
+        }
+        $content = $this->twig->render("Home/gitlabAssignProject.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
+
 }

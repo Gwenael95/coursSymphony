@@ -41,9 +41,6 @@ class SendMailCommand extends Command
 
         $this->gitlabServices->mailSwift();
 
-
-        }
-
         if ($arg1) {
             $io->note(sprintf('You passed an argument: %s', $arg1));
         }

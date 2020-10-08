@@ -176,11 +176,10 @@ class GitlabServices
             foreach ($merges as $m){
                 if ($m["id"]==$p["id"]){
                     array_push($teamMerges, array_merge($m, ["projectName"=>$p["name"]]));
-                    break;
                 }
             }
         }
-        $message = (new \Swift_Message('Hello Email'))
+        $message = (new \Swift_Message('Merge Request'))
             ->setFrom('gwenael.mw@gmail.com')
             ->setTo('gwenael.mw@gmail.com')
             ->setBody(
@@ -207,7 +206,6 @@ class GitlabServices
             foreach ($merges as $m){
                 if ($m["id"]==$p->getProjectId()){
                     array_push($teamMerges, array_merge($m, ["projectName"=>$p->getName()]));
-                    break;
                 }
             }
         }

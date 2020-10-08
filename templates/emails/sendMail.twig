@@ -1,22 +1,51 @@
-<h3>You did it! You registered!</h3>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table{text-align: center; border-collapse: collapse;}
+        td{    border: black 1px groove;}
+        th{background: rgb(180, 180, 180);}
+        tr{    border: black 1px groove;}
+        tr:nth-child(even){background: darkgrey;}
+        tr:nth-child(odd){background: white;}
+        td:nth-child(odd){background: lightgreen;}
+        caption{background: lightskyblue;font-size: 2.5em;}
+    </style>
+</head>
+<body>
 
-Hi {{ name }}! You're successfully registered.
-<table>
-{% for merge in teamMerges %}
-    <tr>
-        {% for data in merge %}
+<table style="border: 2px groove black">
+    <caption>Merges Requests du jour</caption>
+    <colgroup style="border: 2px groove black">
+    </colgroup>
+    <thead>
+        <tr>
+        {% for keys in teamMerges.0|keys %}
             <th>
-                {% if data is not iterable %}
-                    {% if data == merge. %}
-                    {{ data }}
-                {% else %}
-                    {% for item in data %}
-                        {{ item }}
-                    {% endfor %}
-                {% endif %}
+                {{ keys }}
             </th>
         {% endfor %}
-    </tr>
-{% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for merge in teamMerges %}
+        <tr>
+            {% for data in merge %}
+                <td>
+                    {% if data is not iterable %}
+                        {{ data }}
+                    {% else %}
+                        {% for item in data %}
+                            {{ item }}<br>
+                        {% endfor %}
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
 </table>
-Thanks!
+</body>
+
+</html>

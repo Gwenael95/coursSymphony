@@ -163,11 +163,46 @@ class GitlabServices
             if ($merge["state"]==="opened") {
                 array_push($array, ["status" => $merge["merge_status"], "author" => $merge["author"],
                     "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"], "id"=>$merge["project_id"],
-                    "target"=>$merge["target_branch"], "source"=>$merge["source_branch"]]);
+                    "target"=>$merge["target_branch"], "source"=>$merge["source_branch"], "comments" =>$merge["user_notes_count"]]);
             }
         }
         return $array;
     }
+
+    public function mail() {
+        $merges= $this->getMerges();
+        $projects= $this->getAllProject();
+        $teamMerges=[];
+        foreach ($projects as $p) {
+            foreach ($merges as $m){
+                if ($m["id"]==$p["id"]){
+                    array_push($teamMerges, array_merge($m, ["projectName"=>$p["name"]]));
+                    break;
+                }
+            }
+        }
+        $destinataire = "gwenael.mw@gmail.com";
+        $sujet = "test de mail symfony";
+        $entete = 	"From: gwenael.mw@gmail.com \r\n" .
+
+            "Reply-To: gwenael.mw@gmail.com \r\n" .
+            "Content-type: text/html; charset= iso-8859-1\r\n" .
+            "X-Mailer: PHP/" . phpversion(). "\r\n" .
+            "X-Priority: 1 \r\n" .
+            "MIME-version: 1.0\r\n";
+
+
+        $message = "test d'envoie de mail symfony <br>                    
+                    il contiendra toutes les merges requests en attentes
+                    <br><br>" .
+                    $teamMerges[0]["projectName"]
+            . "
+                    ---------------<br>
+                    Ceci est un mail automatique, Merci de ne pas y répondre.";
+
+        return mail($destinataire, $sujet, $message, $entete);
+    }
+
 
     public function getMergesFromTeam( ObjectManager $entityManager, int $id){
         $team = $entityManager->getRepository(Team::class)->findTeamById($id);

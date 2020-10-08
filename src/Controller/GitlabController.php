@@ -35,13 +35,12 @@ class GitlabController  extends AbstractController
     /**
      * @Route("/getMerges",  name="getMerges")
      * @param GitlabServices $gitlabServices
-     * @param string $teamName
      * @return Response
      */
     public function getMerges( GitlabServices $gitlabServices): Response
     {
         $merges = $gitlabServices->getMerges();
-        $content = $this->render("Home/displayMerges.html.twig", array("merges" => $merges));
+        $content = $this->render("Home/displayAllMerges.html.twig", array("merges" => $merges));
         return new Response($content);
     }
 
@@ -124,7 +123,6 @@ class GitlabController  extends AbstractController
         $content = $this->render("Home/displayMerges.html.twig", array("merges" => $merges));
         return new Response($content);
     }
-         return $this->render("Home/displayMerges.html.twig", array("merges" => $merges));
 
 
 

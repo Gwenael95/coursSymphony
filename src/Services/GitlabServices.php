@@ -8,14 +8,19 @@ use App\Entity\Project;
 use App\Entity\Team;
 use Doctrine\Persistence\ObjectManager;
 use Gitlab\Client;
+use Twig\Environment;
 
 class GitlabServices
 {
     private $client;
+    private $mailer;
+    private $twig;
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, \Swift_Mailer $mailer, Environment $twig)
     {
         $this->client = $client;
+        $this->mailer=$mailer;
+        $this->twig=$twig;
     }
 
     private function getClient(){
@@ -169,7 +174,8 @@ class GitlabServices
         return $array;
     }
 
-    public function mail() {
+
+    public function mailSwift() {
         $merges= $this->getMerges();
         $projects= $this->getAllProject();
         $teamMerges=[];
@@ -181,27 +187,22 @@ class GitlabServices
                 }
             }
         }
-        $destinataire = "gwenael.mw@gmail.com";
-        $sujet = "test de mail symfony";
-        $entete = 	"From: gwenael.mw@gmail.com \r\n" .
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('gwenael.mw@gmail.com')
+            ->setTo('gwenael.mw@gmail.com')
+            ->setBody(
+                $this->twig->render(
+                // templates/emails/sendMail.twig
+                    'emails/sendMail.twig',
+                    ['name' => "gwen"]
+                ),
+                'text/html'
+            )
+        ;
 
-            "Reply-To: gwenael.mw@gmail.com \r\n" .
-            "Content-type: text/html; charset= iso-8859-1\r\n" .
-            "X-Mailer: PHP/" . phpversion(). "\r\n" .
-            "X-Priority: 1 \r\n" .
-            "MIME-version: 1.0\r\n";
-
-
-        $message = "test d'envoie de mail symfony <br>                    
-                    il contiendra toutes les merges requests en attentes
-                    <br><br>" .
-                    $teamMerges[0]["projectName"]
-            . "
-                    ---------------<br>
-                    Ceci est un mail automatique, Merci de ne pas y répondre.";
-
-        return mail($destinataire, $sujet, $message, $entete);
+        $this->mailer->send($message);
     }
+
 
 
     public function getMergesFromTeam( ObjectManager $entityManager, int $id){

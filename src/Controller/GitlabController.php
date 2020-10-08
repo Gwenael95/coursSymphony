@@ -40,7 +40,7 @@ class GitlabController  extends AbstractController
     public function getMerges( GitlabServices $gitlabServices): Response
     {
         $merges = $gitlabServices->getMerges();
-        $content = $this->render("Home/displayAllMerges.html.twig", array("merges" => $merges));
+        $content = $this->twig->render("Home/displayAllMerges.html.twig", array("merges" => $merges));
         return new Response($content);
     }
 
@@ -55,7 +55,7 @@ class GitlabController  extends AbstractController
     public function getProject( GitlabServices $gitlabServices): Response
     {
         $projects = $gitlabServices->getAllProjectInDB($this->getDoctrine()->getManager());
-        $content = $this->render("Home/gitlabListProjects.html.twig", array("projects" => $projects));
+        $content = $this->twig->render("Home/gitlabListProjects.html.twig", array("projects" => $projects));
         return new Response($content);
     }
 
@@ -72,7 +72,7 @@ class GitlabController  extends AbstractController
         //$merges = $gitlabServices->getMerges();
         //$gitlabServices->assignTeamProject("testTeam", $entityManager, $merges);
         //$merges = $gitlabServices->getMergesFromTeam($teamName, $entityManager);
-        //$content = $this->render("Home/displayMerges.html.twig", array("merges" => $merges));
+        //$content = $this->twig->render("Home/displayMerges.html.twig", array("merges" => $merges));
 
         $gitlabServices->updateProject($this->getDoctrine()->getManager());
         $team = new Team();
@@ -83,7 +83,7 @@ class GitlabController  extends AbstractController
             $gitlabServices->assignTeamProject($this->getDoctrine()->getManager(),  $request->request->all());
             echo "assignation des projet réussi<br>";
         }
-        $content = $this->render("Home/gitlabAssignProject.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/gitlabAssignProject.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
 
@@ -105,7 +105,7 @@ class GitlabController  extends AbstractController
             $teamId = $gitlabServices->redirectToSelect($this->getDoctrine()->getManager(), $request->request->all());
             return $this->redirectToRoute('getMergesByTeam', ["id"=>$teamId]);
         }
-        $content = $this->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
 
@@ -120,7 +120,7 @@ class GitlabController  extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $merges = $gitlabServices->getMergesFromTeam($entityManager, $id);
-        $content = $this->render("Home/displayMerges.html.twig", array("merges" => $merges));
+        $content = $this->twig->render("Home/displayMerges.html.twig", array("merges" => $merges));
         return new Response($content);
     }
 
@@ -147,7 +147,7 @@ class GitlabController  extends AbstractController
             echo "equipe ajouté<br>";
         }
 
-        $content = $this->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
 
         return new Response($content);
     }
@@ -170,7 +170,7 @@ class GitlabController  extends AbstractController
             $teamId = $gitlabServices->redirectToUpdate($this->getDoctrine()->getManager(), $request->request->all());
             return $this->redirectToRoute('updateTeam', ["id"=>$teamId]);
         }
-        $content = $this->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
 
@@ -191,7 +191,7 @@ class GitlabController  extends AbstractController
             $gitlabServices->updateTeam($this->getDoctrine()->getManager(), $id, $team);
             echo "équipe mise à jour<br>";
         }
-        $content = $this->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
 
@@ -213,7 +213,7 @@ class GitlabController  extends AbstractController
             $gitlabServices->delTeam($this->getDoctrine()->getManager(), $request->request->all());
             return $this->redirectToRoute('delTeam');
         }
-        $content = $this->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
 
@@ -227,7 +227,7 @@ class GitlabController  extends AbstractController
     public function getTeam(GitlabServices $gitlabServices): Response
     {
         $teams = $gitlabServices->getAllTeam($this->getDoctrine()->getManager());
-        $content = $this->render("Home/displayTeam.html.twig", ["teams" =>  $teams] );
+        $content = $this->twig->render("Home/displayTeam.html.twig", ["teams" =>  $teams] );
         return new Response($content);
     }
 }

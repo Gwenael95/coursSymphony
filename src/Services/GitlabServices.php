@@ -87,7 +87,6 @@ class GitlabServices
         $entityManager->persist($team);
 */
         foreach($quest as $prop=>$qst){
-            var_dump($qst);
             if (isset($qst["teamName"])) {
                 $team = $entityManager->getRepository(Team::class)->findTeamByTeamName($qst["teamName"]);
                 $entityManager->persist($team);
@@ -164,7 +163,7 @@ class GitlabServices
 
         $array = [];
         foreach ($merges as $merge){
-            if ($merge["merge_status"]==="can_be_merged") {
+            if ($merge["state"]==="opened") {
                 array_push($array, ["status" => $merge["merge_status"], "author" => $merge["author"],
                     "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"], "id"=>$merge["project_id"]]);
             }

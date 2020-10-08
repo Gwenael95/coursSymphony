@@ -7,7 +7,8 @@
         {% for merge in merges %}
             <li class="list-group-item">
                 <div style="margin-bottom: 10px;">
-                    <span class="badge badge-info">
+                    <span class="badge badge-info" style="text-align: left">
+                        {{ merge.projectName }}<br>
                     Titre :                   {{ merge.title }}
                     </span>
                 </div>

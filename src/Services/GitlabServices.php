@@ -111,7 +111,7 @@ class GitlabServices
 
     public function getAllProject(){
         $client = $this->getClient();
-        return $client->projects()->all(["owned" => true,]);
+        return $client->projects()->all(["owned" => true,"simple"=>true]);
     }
 
     public function getAllProjectInDB(ObjectManager $entityManager){
@@ -148,7 +148,13 @@ class GitlabServices
 
 
     public function getAllMemberFromProject(int $projectId){
+        //21522457
         $members = $this->client->projects()->allMembers( $projectId);
+        //$this->client->projects()->all(["simple"=>true, "owned" => true]);
+        $test = $this->client->projects()->all(["simple"=>true, "owned" => true]);
+
+        var_dump($test);
+
         return $members;
     }
 
@@ -161,24 +167,29 @@ class GitlabServices
                 array_push($array, ["status" => $merge["merge_status"], "author" => $merge["author"],
                     "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"], "id"=>$merge["project_id"],
                     "target"=>$merge["target_branch"], "source"=>$merge["source_branch"], "comments" =>$merge["user_notes_count"],
-                    "labels"=>$merge["labels"], "title" => $merge["title"], "tag"=>($merge["milestone"] ==null ? $merge["milestone"] : $merge["milestone"]["title"])]);
+                    "labels"=>$merge["labels"], "title" => $merge["title"],
+                    "tag"=>($merge["milestone"] ==null ? $merge["milestone"] : $merge["milestone"]["title"])]);
             }
         }
         return $array;
     }
 
-
-    public function mailSwift() {
+    public function getAllMergesDetails(){
         $merges= $this->getMerges();
         $projects= $this->getAllProject();
-        $teamMerges=[];
+        $mergesDetailed=[];
         foreach ($projects as $p) {
             foreach ($merges as $m){
                 if ($m["id"]==$p["id"]){
-                    array_push($teamMerges, array_merge($m, ["projectName"=>$p["name"]]));
+                    array_push($mergesDetailed, array_merge($m, ["projectName"=>$p["name"]]));
                 }
             }
         }
+        return $mergesDetailed;
+    }
+
+    public function mailSwift() {
+        $mergesDetailed=$this->getAllMergesDetails();
         $message = (new \Swift_Message('Merge Request'))
             ->setFrom('gwenael.mw@gmail.com')
             ->setTo('gwenael.mw@gmail.com')
@@ -186,7 +197,7 @@ class GitlabServices
                 $this->twig->render(
                 // templates/emails/sendMail.twig
                     'emails/sendMail.twig',
-                    ['name' => "gwen", "teamMerges"=>$teamMerges]
+                    ['name' => "gwen", "mergesDetailed"=>$mergesDetailed]
                 ),
                 'text/html'
             )
@@ -200,16 +211,15 @@ class GitlabServices
     public function getMergesFromTeam( ObjectManager $entityManager, int $id){
         $team = $entityManager->getRepository(Team::class)->findTeamById($id);
         $projects = $team->getProjects();
-        $merges = $this->getMerges();
+        $merges = $this->getAllMergesDetails();
         $teamMerges = [];
         foreach ($projects as $p) {
             foreach ($merges as $m){
                 if ($m["id"]==$p->getProjectId()){
-                    array_push($teamMerges, array_merge($m, ["projectName"=>$p->getName()]));
+                    array_push($teamMerges, $m);
                 }
             }
         }
-        //var_dump($teamMerges);
         return $teamMerges;
     }
 

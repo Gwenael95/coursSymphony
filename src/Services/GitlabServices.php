@@ -163,14 +163,15 @@ class GitlabServices
             if ($merge["state"]==="opened") {
                 array_push($array, ["status" => $merge["merge_status"], "author" => $merge["author"],
                     "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"], "id"=>$merge["project_id"],
-                    "target"=>$merge["target_branch"], "source"=>$merge["source_branch"], "comments" =>$merge["user_notes_count"]]);
+                    "target"=>$merge["target_branch"], "source"=>$merge["source_branch"], "comments" =>$merge["user_notes_count"],
+                    "labels"=>$merge["labels"], "title" => $merge["title"], "tag"=>($merge["milestone"] ==null ? $merge["milestone"] : $merge["milestone"]["title"])]);
             }
         }
         return $array;
     }
 
     public function mail() {
-        $merges= $this->getMerges();
+        /*$merges= $this->getMerges();
         $projects= $this->getAllProject();
         $teamMerges=[];
         foreach ($projects as $p) {
@@ -180,7 +181,9 @@ class GitlabServices
                     break;
                 }
             }
-        }
+        }*/
+
+        //gwenael.mw@orange.fr
         $destinataire = "gwenael.mw@gmail.com";
         $sujet = "test de mail symfony";
         $entete = 	"From: gwenael.mw@gmail.com \r\n" .
@@ -191,16 +194,34 @@ class GitlabServices
             "X-Priority: 1 \r\n" .
             "MIME-version: 1.0\r\n";
 
+/*
+  $message = "test d'envoie de mail symfony <br>
+                    il contiendra toutes les merges requests en attentes
+                    <br><br>
+                    <table>";
+                    foreach ($teamMerges as $merge) {
+                        $message .= "<tr>";
+                        foreach ($merge as $column) {
+                            $message .= "<td>";
+                            if(!is_array($column)){
+                                $message .= $column;
+                            }
+                            $message.="</td>";
+                        }
+                        $message .= "</tr>";
+                    }
+                    $message .= '</table>';
+            $message.= "---------------<br>
+                    Ceci est un mail automatique, Merci de ne pas y répondre.";
+
+ */
 
         $message = "test d'envoie de mail symfony <br>                    
                     il contiendra toutes les merges requests en attentes
-                    <br><br>" .
-                    $teamMerges[0]["projectName"]
-            . "
-                    ---------------<br>
+                    <br><br>---------------<br>
                     Ceci est un mail automatique, Merci de ne pas y répondre.";
 
-        return mail($destinataire, $sujet, $message, $entete);
+        $try = mail($destinataire, $sujet, $message, $entete);
     }
 
 

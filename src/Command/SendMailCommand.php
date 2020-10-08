@@ -38,15 +38,9 @@ class SendMailCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('arg1');
 
-        $sendMail = $this->gitlabServices->mail();
+        $this->gitlabServices->mail();
 
-        if ($sendMail){
-            return Command::SUCCESS;
-        }
-        else{
-            return Command::FAILURE;
 
-        }
 
         if ($arg1) {
             $io->note(sprintf('You passed an argument: %s', $arg1));

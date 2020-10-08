@@ -80,6 +80,10 @@ class GitlabServices
         return $entityManager->getRepository(Team::class)->findAllTeam();
     }
 
+    public function getTeamById(ObjectManager $entityManager, $id){
+        return $entityManager->getRepository(Team::class)->findTeamById($id);
+    }
+
 
 
     public function assignTeamProject( ObjectManager $entityManager,/*string $teamName,*/ $quest){

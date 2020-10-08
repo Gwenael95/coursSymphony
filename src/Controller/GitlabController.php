@@ -120,7 +120,8 @@ class GitlabController  extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $merges = $gitlabServices->getMergesFromTeam($entityManager, $id);
-        $content = $this->twig->render("Home/displayMerges.html.twig", array("merges" => $merges));
+        $content = $this->twig->render("Home/displayMerges.html.twig", array("merges" => $merges,
+            "team"=>$gitlabServices->getTeamById($entityManager, $id)));
         return new Response($content);
     }
 

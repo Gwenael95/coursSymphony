@@ -148,15 +148,7 @@ class GitlabServices
 
 
     public function getAllMemberFromProject(int $projectId){
-        //$members = $this->client->projects()->allMembers(21522457);
         $members = $this->client->projects()->allMembers( $projectId);
-
-        ///21256897  --  21522457  --  21256865  --  21256859  --  21256854   --  21256849 --  21221266
-        /// our projects
-        /*var_dump($onePro);
-        foreach ($onePro as $user){
-            echo $user["username"];
-        }*/
         return $members;
     }
 
@@ -168,7 +160,8 @@ class GitlabServices
             if ($merge["state"]==="opened") {
                 array_push($array, ["status" => $merge["merge_status"], "author" => $merge["author"],
                     "upvotes" => $merge["upvotes"], "downvotes" => $merge["downvotes"], "id"=>$merge["project_id"],
-                    "target"=>$merge["target_branch"], "source"=>$merge["source_branch"], "comments" =>$merge["user_notes_count"]]);
+                    "target"=>$merge["target_branch"], "source"=>$merge["source_branch"], "comments" =>$merge["user_notes_count"],
+                    "labels"=>$merge["labels"], "title" => $merge["title"], "tag"=>($merge["milestone"] ==null ? $merge["milestone"] : $merge["milestone"]["title"])]);
             }
         }
         return $array;
@@ -194,7 +187,7 @@ class GitlabServices
                 $this->twig->render(
                 // templates/emails/sendMail.twig
                     'emails/sendMail.twig',
-                    ['name' => "gwen"]
+                    ['name' => "gwen", "teamMerges"=>$teamMerges]
                 ),
                 'text/html'
             )

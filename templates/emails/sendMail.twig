@@ -1,5 +1,22 @@
 <h3>You did it! You registered!</h3>
 
 Hi {{ name }}! You're successfully registered.
-
+<table>
+{% for merge in teamMerges %}
+    <tr>
+        {% for data in merge %}
+            <th>
+                {% if data is not iterable %}
+                    {% if data == merge. %}
+                    {{ data }}
+                {% else %}
+                    {% for item in data %}
+                        {{ item }}
+                    {% endfor %}
+                {% endif %}
+            </th>
+        {% endfor %}
+    </tr>
+{% endfor %}
+</table>
 Thanks!

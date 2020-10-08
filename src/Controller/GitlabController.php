@@ -229,7 +229,6 @@ class GitlabController  extends AbstractController
     {
         $teams = $gitlabServices->getAllTeam($this->getDoctrine()->getManager());
         $content = $this->render("Home/displayTeam.html.twig", ["teams" =>  $teams] );
-
         return new Response($content);
     }
 }

@@ -1,6 +1,7 @@
 {% extends "Home/index.html.twig" %}
-{% block title %} {{ parent() }} - choix de l'equipe{% endblock %}
+{% block title %} {{ parent() }} - choix de l'equipe à modifier{% endblock %}
 {% block main %}
+    Sélectionner l'équipe à modifier.
     {{ form_start(formTeam) }}
 
     {{ form_row(formTeam.teamName) }}

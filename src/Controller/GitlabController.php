@@ -107,6 +107,8 @@ class GitlabController  extends AbstractController
      */
     public function getProject( GitlabServices $gitlabServices, \Swift_Mailer $mailer): Response
     {
+        //$gitlabServices->mail();
+
         $projects = $gitlabServices->getAllProjectInDB($this->getDoctrine()->getManager());
         $content = $this->twig->render("Home/gitlabListProjects.html.twig", array("projects" => $projects));
         return new Response($content);

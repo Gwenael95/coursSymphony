@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>{% block title %} symfoExo {% endblock %}</title>
         {% block css %}{% endblock %}
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     </head>
@@ -14,16 +15,16 @@
                 <a class="navbar-brand" href="#">
                     <h1>#BalanceTaMR</h1>
                 </a>
-                <div>
-                    <a href="{{ path('getMerges') }}">Les merges</a>
-                    <a href="{{ path('getProject') }}">Les projets</a>
-                    <a href="{{ path('assignProject') }}">Assigner des Projets</a>
-                    <a href="{{ path('createTeam') }}">Créer équipe</a>
+                <div class="collapse navbar-collapse">
+                    <a class="nav-link" href="{{ path('getMerges') }}">Les merges</a>
+                    <a class="nav-link" href="{{ path('getProject') }}">Les projets</a>
+                    <a class="nav-link" href="{{ path('assignProject') }}">Assigner des Projets</a>
+                    <a class="nav-link" href="{{ path('createTeam') }}">Créer équipe</a>
 
-                    <a href="{{ path('setTeam') }}">Mettre à jour équipe</a>
-                    <a href="{{ path('delTeam') }}">Supprimer équipe</a>
-                    <a href="{{ path('getTeam') }}">voir les équipes</a>
-                    <a href="{{ path('selectTeam') }}">voir MR d'une équipe</a>
+                    <a class="nav-link" href="{{ path('setTeam') }}">Mettre à jour équipe</a>
+                    <a class="nav-link" href="{{ path('delTeam') }}">Supprimer équipe</a>
+                    <a class="nav-link" href="{{ path('getTeam') }}">voir les équipes</a>
+                    <a class="nav-link" href="{{ path('selectTeam') }}">voir MR d'une équipe</a>
 
                 </div>
             </nav>

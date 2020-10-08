@@ -12,8 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TeamType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options){
-        $builder->add("teamName", TextType::class, ["label" => 'nom de l\'équipe']);
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add("teamName", TextType::class, ["label" => 'Nom de l\'équipe', 'attr' => ['class' => 'form-control form-control-lg'],]);
     }
 
 }

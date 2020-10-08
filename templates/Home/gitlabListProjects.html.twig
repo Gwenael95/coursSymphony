@@ -1,9 +1,9 @@
 {% extends "Home/index.html.twig" %}
 {% block title %} {{ parent() }} - liste des projets{% endblock %}
 {% block main %}
-    <ul>
+    <ul class="list-group" style="align-items: center">
     {% for project in projects %}
-        <li>nom : {{ project.name }}, id du projet sur git : {{ project.projectId }}</li>
+        <li class="list-group-item">nom : {{ project.name }}, id du projet sur git : <span class="badge badge-primary badge-pill">{{ project.projectId }}</span></li>
     {% endfor %}
     </ul>
 {% endblock %}

@@ -1,12 +1,15 @@
 {% extends "Home/index.html.twig" %}
 {% block title %} {{ parent() }} - équipes{% endblock %}
 {% block main %}
-    <ul>
-        {% for team in teams %}
-            <li>
+    <h3>Liste des équipes</h3>
+    <ul class="list-group" style="align-items: center">
+
+    {% for team in teams %}
+            <li class="list-group-item">
                 {{ team.teamName|upper }}
             </li>
         {% endfor %}
     </ul>
+
 
 {% endblock %}

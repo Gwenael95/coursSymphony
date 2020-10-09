@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+
 use App\Entity\Project;
 use App\Entity\Team;
 use Doctrine\Persistence\ObjectManager;
@@ -10,7 +11,6 @@ use Gitlab\Client;
 
 class GitlabServices
 {
-
     private $client;
 
     public function __construct(Client $client)
@@ -24,8 +24,6 @@ class GitlabServices
     }
 
 
-
-
     /**
      * this function get all project from Gitlab API
      * @return mixed
@@ -35,6 +33,7 @@ class GitlabServices
         return $client->projects()->all(["owned" => true,"simple"=>true]);
     }
 
+
     /**
      * this function get all project saved in database (useful if we add team's image in DB)
      * @param ObjectManager $entityManager
@@ -43,6 +42,7 @@ class GitlabServices
     public function getAllProjectInDB(ObjectManager $entityManager){
         return $entityManager->getRepository(Project::class)->findAllProject();;
     }
+
 
     /**
      * this function get only all projects id from API
@@ -62,7 +62,7 @@ class GitlabServices
      * This function get all project on gitlab and save them in database
      * @param ObjectManager $entityManager
      */
-    public function updateProject(ObjectManager $entityManager) {
+    public function updateProjectInDb(ObjectManager $entityManager) {
         $gitProjects = $this->getAllProject();
         foreach ($gitProjects as $project){
             $newProject= $entityManager->getRepository(Project::class)->findOneProjectByProjectId($project["id"]);
@@ -77,7 +77,6 @@ class GitlabServices
     }
 
 
-
     /**
      * this function get all project members from API, thanks to a project id
      * @param int $projectId
@@ -89,11 +88,12 @@ class GitlabServices
         return $members;
     }
 
+
     /**
      * this function get all merges from API, with all useful data (but not more)
      * @return array
      */
-    public function getMerges(){
+    private function getMerges(){
         $merges = $this->client->mergeRequests()->all();
 
         $array = [];
@@ -108,6 +108,7 @@ class GitlabServices
         }
         return $array;
     }
+
 
     /**
      * this function get all merges details, and add the project name for each one,
@@ -127,9 +128,7 @@ class GitlabServices
         }
         return $mergesDetailed;
     }
-
-
-
+    
 
     /**
      * this function get all merges for a team depending on its related projects

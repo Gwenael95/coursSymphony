@@ -67,7 +67,7 @@ class ProjectController  extends AbstractController
      */
     public function assignProject(Request $request, GitlabServices $gitlabServices, TeamServices $teamServices): Response
     {
-        $gitlabServices->updateProject($this->getDoctrine()->getManager());
+        $gitlabServices->updateProjectInDb($this->getDoctrine()->getManager());
         $team = new Team();
         $project = new Project();
         $form=$this->createForm(TeamProjectAssignType::class, [$team, $project]);
@@ -92,7 +92,7 @@ class ProjectController  extends AbstractController
      */
     public function disassignProject(Request $request, GitlabServices $gitlabServices, TeamServices $teamServices): Response
     {
-        $gitlabServices->updateProject($this->getDoctrine()->getManager());
+        $gitlabServices->updateProjectInDb($this->getDoctrine()->getManager());
         $team = new Team();
         $project = new Project();
         $form=$this->createForm(TeamProjectAssignType::class, [$team, $project]);

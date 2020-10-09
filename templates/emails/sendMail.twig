@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table{text-align: center; border-collapse: collapse;}
+        td{    border: black 1px groove;}
+        th{background: rgb(180, 180, 180);}
+        tr{    border: black 1px groove;}
+        tr:nth-child(even){background: darkgrey;}
+        tr:nth-child(odd){background: white;}
+        td:nth-child(odd){background: lightgreen;}
+        caption{background: lightskyblue;font-size: 2.5em;}
+    </style>
+</head>
+<body>
+
+<table style="border: 2px groove black">
+    <caption>Merges Requests du jour</caption>
+    <colgroup style="border: 2px groove black">
+    </colgroup>
+    <thead>
+        <tr>
+        {% for keys in mergesDetailed.0|keys %}
+            <th>
+                {{ keys }}
+            </th>
+        {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for merge in mergesDetailed %}
+        <tr>
+            {% for data in merge %}
+                <td>
+                    {% if data is not iterable %}
+                        {{ data }}
+                    {% else %}
+                        {% for item in data %}
+                            {{ item }}<br>
+                        {% endfor %}
+                    {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+
+</html>

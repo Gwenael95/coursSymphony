@@ -1,11 +1,3 @@
 index:
     path: /
-    controller: App\Controller\DefaultController::index
-
-hello:
-    path: /hello/{prenom}
-    controller: App\Controller\DefaultController::hello
-
-calc:
-    path: /calc/{nb1}/{nb2}
-    controller: App\Controller\ServicesController::calc
+    controller: App\Controller\GitlabController::getMerges

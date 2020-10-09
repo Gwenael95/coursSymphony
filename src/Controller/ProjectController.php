@@ -74,6 +74,10 @@ class ProjectController  extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $teamServices->assignTeamProject($this->getDoctrine()->getManager(),  $request->request->all());
+            $teamId = $teamServices->getTeamIdSelectUnique($this->getDoctrine()->getManager(), $request->request->all());
+
+            return $this->redirectToRoute('getMergesByTeam', ["id"=>$teamId]);
+
         }
         $content = $this->twig->render("Home/assignTeamProject.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
@@ -99,6 +103,9 @@ class ProjectController  extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $teamServices->disassignProject($this->getDoctrine()->getManager(),  $request->request->all());
+            $teamId = $teamServices->getTeamIdSelectUnique($this->getDoctrine()->getManager(), $request->request->all());
+
+            return $this->redirectToRoute('getMergesByTeam', ["id"=>$teamId]);
         }
         $content = $this->twig->render("Home/disassignProject.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);

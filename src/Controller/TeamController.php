@@ -53,6 +53,8 @@ class TeamController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $teamServices->addTeam($this->getDoctrine()->getManager(), $team);
+            return $this->redirectToRoute('getTeam');
+
         }
 
         $content = $this->twig->render("Home/createTeam.html.twig", array("formTeam"=>$form->createView()));
@@ -102,6 +104,8 @@ class TeamController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $teamServices->updateTeam($this->getDoctrine()->getManager(), $id, $team);
+            return $this->redirectToRoute('getTeam');
+
         }
         $content = $this->twig->render("Home/setTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);

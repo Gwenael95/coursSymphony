@@ -46,7 +46,7 @@ class GitlabController  extends AbstractController
         $content = $this->twig->render("Home/displayAllMerges.html.twig", array("merges" => $merges));
         return new Response($content);
     }
-    
+
 
     /**
      * this function will select the team to display their merge requests,

@@ -3,31 +3,26 @@
 
 namespace App\Services;
 
-
 use App\Entity\Project;
 use App\Entity\Team;
 use Doctrine\Persistence\ObjectManager;
 use Gitlab\Client;
-use Twig\Environment;
 
 class GitlabServices
 {
-    private $client;
-    private $mailer;
-    private $twig;
 
-    public function __construct(Client $client, \Swift_Mailer $mailer, Environment $twig)
+    private $client;
+
+    public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->mailer=$mailer;
-        $this->twig=$twig;
     }
 
 
     private function getClient(){
         return $client = $this->client->authenticate('HNtbdHhikjxvHZqzeN-4', Client::AUTH_HTTP_TOKEN);
     }
-    
+
 
 
 
@@ -133,31 +128,7 @@ class GitlabServices
         return $mergesDetailed;
     }
 
-    /**
-     * this function send a mail with Swift mailer, containing all merges details
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
-    public function mailSwift() {
-        $mergesDetailed=$this->getAllMergesDetails();
-        $message = (new \Swift_Message('Merge Request'))
-            ->setFrom('gwenael.mw@gmail.com')
-            ->setTo('gwenael.mw@gmail.com')
-            ->setBody(
-                $this->twig->render(
-                // templates/emails/sendMail.twig
-                    'emails/sendMail.twig',
-                    ['name' => "gwen", "mergesDetailed"=>$mergesDetailed]
-                ),
-                'text/html'
-            )
-        ;
 
-        echo($message);
-
-        $this->mailer->send($message);
-    }
 
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Services\GitlabServices;
+use App\Services\SendMailServices;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,12 +17,12 @@ class SendMailCommand extends Command
     protected static $defaultName = 'app:sendMail';
 
     //private $em;
-    private $gitlabServices;
+    private $mailServices;
 
-    public function __construct(/*ObjectManager $em,*/ GitlabServices $gitlabServices)
+    public function __construct(/*ObjectManager $em,*/ SendMailServices $mailServices)
     {
         //$this->em = $em;
-        $this->gitlabServices = $gitlabServices;
+        $this->mailServices = $mailServices;
         parent::__construct();
     }
 
@@ -39,7 +40,7 @@ class SendMailCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('arg1');
 
-        $this->gitlabServices->mailSwift();
+        $this->mailServices->mailSwift();
 
         if ($arg1) {
             $io->note(sprintf('You passed an argument: %s', $arg1));

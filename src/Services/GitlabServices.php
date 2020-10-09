@@ -3,24 +3,20 @@
 
 namespace App\Services;
 
-
 use App\Entity\Project;
 use App\Entity\Team;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Gitlab\Client;
 
 class GitlabServices
 {
     private $client;
+    private $em;
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, EntityManagerInterface $em)
     {
-        $this->client = $client;
-    }
-
-
-    private function getClient(){
-        return $client = $this->client->authenticate('HNtbdHhikjxvHZqzeN-4', Client::AUTH_HTTP_TOKEN);
+        $this->client = $client->authenticate('HNtbdHhikjxvHZqzeN-4', Client::AUTH_HTTP_TOKEN);
+        $this->em=$em;
     }
 
 
@@ -29,18 +25,16 @@ class GitlabServices
      * @return mixed
      */
     public function getAllProject(){
-        $client = $this->getClient();
-        return $client->projects()->all(["owned" => true,"simple"=>true]);
+        return $this->client->projects()->all(["owned" => true,"simple"=>true]);
     }
 
 
     /**
      * this function get all project saved in database (useful if we add team's image in DB)
-     * @param ObjectManager $entityManager
      * @return mixed
      */
-    public function getAllProjectInDB(ObjectManager $entityManager){
-        return $entityManager->getRepository(Project::class)->findAllProject();;
+    public function getAllProjectInDB(){
+        return $this->em->getRepository(Project::class)->findAllProject();;
     }
 
 
@@ -60,20 +54,19 @@ class GitlabServices
 
     /**
      * This function get all project on gitlab and save them in database
-     * @param ObjectManager $entityManager
      */
-    public function updateProjectInDb(ObjectManager $entityManager) {
+    public function updateProjectInDb() {
         $gitProjects = $this->getAllProject();
         foreach ($gitProjects as $project){
-            $newProject= $entityManager->getRepository(Project::class)->findOneProjectByProjectId($project["id"]);
+            $newProject= $this->em->getRepository(Project::class)->findOneProjectByProjectId($project["id"]);
             if ($newProject==null){
                 $newProject = new Project();
             }
             $newProject->setName($project["name"]);
             $newProject->setProjectId($project["id"]);
-            $entityManager->persist($newProject);
+            $this->em->persist($newProject);
         }
-        $entityManager->flush();
+        $this->em->flush();
     }
 
 
@@ -128,16 +121,15 @@ class GitlabServices
         }
         return $mergesDetailed;
     }
-    
+
 
     /**
      * this function get all merges for a team depending on its related projects
-     * @param ObjectManager $entityManager
      * @param int $id
      * @return array
      */
-    public function getMergesFromTeam( ObjectManager $entityManager, int $id){
-        $team = $entityManager->getRepository(Team::class)->findTeamById($id);
+    public function getMergesFromTeam( int $id){
+        $team = $this->em->getRepository(Team::class)->findTeamById($id);
         $projects = $team->getProjects();
         $merges = $this->getAllMergesDetails();
         $teamMerges = [];

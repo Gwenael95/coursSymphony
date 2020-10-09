@@ -26,29 +26,34 @@ class ProjectController  extends AbstractController
      * @var Environment
      */
     private $twig;
+    private $teamServices;
+    private $gitServices;
 
     /**
      * TeamController constructor.
      * @param Environment $twig
+     * @param TeamServices $teamServices
+     * @param GitlabServices $gitServices
      */
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, TeamServices $teamServices, GitlabServices $gitServices)
     {
         $this->twig = $twig;
+        $this->teamServices=$teamServices;
+        $this->gitServices=$gitServices;
     }
 
 
     /**
      * this function list only all projects in database
      * @Route("/getProject",  name="getProject")
-     * @param GitlabServices $gitlabServices
      * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function getProject( GitlabServices $gitlabServices): Response
+    public function getProject(): Response
     {
-        $projects = $gitlabServices->getAllProjectInDB($this->getDoctrine()->getManager());
+        $projects = $this->gitServices->getAllProjectInDB();
         $content = $this->twig->render("Home/listProjects.html.twig", array("projects" => $projects));
         return new Response($content);
     }
@@ -58,26 +63,22 @@ class ProjectController  extends AbstractController
      * this function allow to assign project to a team
      * @Route("/assignProject",  name="assignProject")
      * @param Request $request
-     * @param GitlabServices $gitlabServices
-     * @param TeamServices $teamServices
      * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function assignProject(Request $request, GitlabServices $gitlabServices, TeamServices $teamServices): Response
+    public function assignProject(Request $request): Response
     {
-        $gitlabServices->updateProjectInDb($this->getDoctrine()->getManager());
+        $this->gitServices->updateProjectInDb();
         $team = new Team();
         $project = new Project();
         $form=$this->createForm(TeamProjectAssignType::class, [$team, $project]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $teamServices->assignTeamProject($this->getDoctrine()->getManager(),  $request->request->all());
-            $teamId = $teamServices->getTeamIdSelectUnique($this->getDoctrine()->getManager(), $request->request->all());
-
+            $this->teamServices->assignTeamProject($request->request->all());
+            $teamId = $this->teamServices->getTeamIdSelectUnique($request->request->all());
             return $this->redirectToRoute('getMergesByTeam', ["id"=>$teamId]);
-
         }
         $content = $this->twig->render("Home/assignTeamProject.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
@@ -88,29 +89,25 @@ class ProjectController  extends AbstractController
      * this function allow to disassign project to a team
      * @Route("/disassignProject",  name="disassignProject")
      * @param Request $request
-     * @param GitlabServices $gitlabServices
      * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function disassignProject(Request $request, GitlabServices $gitlabServices, TeamServices $teamServices): Response
+    public function disassignProject(Request $request ): Response
     {
-        $gitlabServices->updateProjectInDb($this->getDoctrine()->getManager());
+        $this->gitServices->updateProjectInDb();
         $team = new Team();
         $project = new Project();
         $form=$this->createForm(TeamProjectAssignType::class, [$team, $project]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $teamServices->disassignProject($this->getDoctrine()->getManager(),  $request->request->all());
-            $teamId = $teamServices->getTeamIdSelectUnique($this->getDoctrine()->getManager(), $request->request->all());
+            $this->teamServices->disassignProject($request->request->all());
+            $teamId = $this->teamServices->getTeamIdSelectUnique($request->request->all());
 
             return $this->redirectToRoute('getMergesByTeam', ["id"=>$teamId]);
         }
         $content = $this->twig->render("Home/disassignProject.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
-
-
-
 }

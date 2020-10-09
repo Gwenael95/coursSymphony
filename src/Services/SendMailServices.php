@@ -2,22 +2,17 @@
 
 
 namespace App\Services;
-
-
-use Gitlab\Client;
 use Twig\Environment;
 
 class SendMailServices
 {
 
-    private $client;
     private $mailer;
     private $twig;
     private $gitlabServices;
 
-    public function __construct(Client $client, \Swift_Mailer $mailer, Environment $twig, GitlabServices $gitlabServices)
+    public function __construct(\Swift_Mailer $mailer, Environment $twig, GitlabServices $gitlabServices)
     {
-        $this->client = $client;
         $this->mailer=$mailer;
         $this->twig=$twig;
         $this->gitlabServices = $gitlabServices;

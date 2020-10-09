@@ -16,12 +16,10 @@ class SendMailCommand extends Command
 {
     protected static $defaultName = 'app:sendMail';
 
-    //private $em;
     private $mailServices;
 
-    public function __construct(/*ObjectManager $em,*/ SendMailServices $mailServices)
+    public function __construct( SendMailServices $mailServices)
     {
-        //$this->em = $em;
         $this->mailServices = $mailServices;
         parent::__construct();
     }
@@ -39,19 +37,14 @@ class SendMailCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('arg1');
-
         $this->mailServices->mailSwift();
-
         if ($arg1) {
             $io->note(sprintf('You passed an argument: %s', $arg1));
         }
-
         if ($input->getOption('option1')) {
             // ...
         }
-
         $io->success('mail sended successfully.');
-
         return Command::SUCCESS;
     }
 }

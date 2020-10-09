@@ -72,7 +72,9 @@ class ProjectController  extends AbstractController
     {
         $this->gitServices->updateProjectInDb();
         $team = new Team();
-        $project = new Project();
+        //$project = new Project();
+        $project=$team->getProjects();
+        //$projectByTeam = $this->teamServices->getProjectByTeam($team);
         $form=$this->createForm(TeamProjectAssignType::class, [$team, $project]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){

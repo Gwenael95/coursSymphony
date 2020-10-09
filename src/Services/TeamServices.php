@@ -119,6 +119,16 @@ class TeamServices
         return $this->em->getRepository(Team::class)->findTeamById($id);
     }
 
+    /**
+     * this function get team from database depending on the given id
+     * @param $id
+     * @return mixed
+     */
+    public function getProjectByTeam(Team $team){
+        $team->getProjects();
+        return $this->em->getRepository(Team::class)->findTeamById($id);
+    }
+
 
     /**
      * this function assign team and projects and save this in database

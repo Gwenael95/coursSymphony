@@ -1,0 +1,22 @@
+{% extends "Home/index.html.twig" %}
+{% block title %} {{ parent() }} -  assigner projet-équipe{% endblock %}
+{% block main %}
+    <div style="text-align: center">
+        <h3>retirer assignation d'une équipe à un/des projets</h3>
+        {{ form_start(formTeam) }}
+        <div>
+            {{ form_label(formTeam.teamName) }}<br>
+            {{ form_widget(formTeam.teamName) }}
+        </div>
+        {{ form_errors(formTeam.teamName) }}
+
+        <div>
+            {{ form_label(formTeam.name) }}<br>
+            {{ form_widget(formTeam.name) }}
+        </div>
+        {{ form_errors(formTeam.name) }}
+
+        <button type="submit" class="buttonArticle btn btn-primary">Envoyer</button>
+        {{ form_end(formTeam) }}
+    </div>
+{% endblock %}

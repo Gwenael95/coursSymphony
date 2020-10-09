@@ -10,7 +10,8 @@
         <style>
             .marginChild > a {margin: 5px; color: lightblue;transition: color ease .4s;}
             .marginChild > a:hover {color: white;}
-            .flexCenter{width: 20%;min-width: 200px;border: 2px darkslategrey groove;transition: background ease .4s;}
+            .flexCenter{width: 20%;min-width: 200px;border: 2px darkslategrey groove;transition: background ease .4s;
+            border-radius: 10px;box-shadow: rgb(50, 50, 50) 2px 2px;}
             .flexCenter:hover{background: hsl(187, 52%, 89%);}
         </style>
     </head>
@@ -25,12 +26,14 @@
                     <a class="nav-link" href="{{ path('getMerges') }}">Les merges</a>
                     <a class="nav-link" href="{{ path('getProject') }}">Les projets</a>
                     <a class="nav-link" href="{{ path('assignProject') }}">Assigner des Projets</a>
+                    <a class="nav-link" href="{{ path('disassignProject') }}">supprimer un projet d'une équipe</a>
+
                     <a class="nav-link" href="{{ path('createTeam') }}">Créer équipe</a>
 
-                    <a href="{{ path('setTeam') }}">Mettre à jour équipe</a>
-                    <a href="{{ path('delTeam') }}">Supprimer équipe</a>
-                    <a href="{{ path('getTeam') }}">voir les équipes</a>
-                    <a href="{{ path('selectTeamMerges') }}">voir MR d'une équipe</a>
+                    <a class="nav-link"  href="{{ path('setTeam') }}">Mettre à jour équipe</a>
+                    <a class="nav-link"  href="{{ path('delTeam') }}">Supprimer équipe</a>
+                    <a class="nav-link" href="{{ path('getTeam') }}">voir les équipes</a>
+                    <a class="nav-link" href="{{ path('selectTeamMerges') }}">voir MR d'une équipe</a>
 
                 </div>
             </nav>

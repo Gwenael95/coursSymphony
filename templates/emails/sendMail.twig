@@ -12,10 +12,14 @@
         td:nth-child(odd){background: lightgreen;}
         caption{background: lightskyblue;font-size: 2.5em;}
     </style>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 </head>
 <body>
 
-<table style="border: 2px groove black">
+<table style="border: 2px groove black" class="table table-striped">
     <caption>Merges Requests du jour</caption>
     <colgroup style="border: 2px groove black">
     </colgroup>
@@ -36,8 +40,13 @@
                     {% if data is not iterable %}
                         {{ data }}
                     {% else %}
-                        {% for item in data %}
-                            {{ item }}<br>
+                        {% for key, item in data %}
+                            {% if key is same as("avatar_url")  %}
+                                <img src="{{ item }}" alt="avatar"/>
+                            {% else %}
+                                {{ item }}
+                            {% endif %}
+                            <br>
                         {% endfor %}
                     {% endif %}
                 </td>

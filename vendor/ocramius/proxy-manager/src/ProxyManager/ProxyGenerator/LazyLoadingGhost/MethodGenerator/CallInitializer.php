@@ -66,7 +66,7 @@ $this->%s = false;
 return $result;
 PHP;
 
-        $referenceableProperties = $properties->withoutNonReferenceableProperties();
+        $referenceableProperties = $properties->onlyPropertiesThatCanBeUnset();
 
         $this->setBody(sprintf(
             $bodyTemplate,

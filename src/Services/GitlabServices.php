@@ -309,6 +309,8 @@ class GitlabServices
             )
         ;
 
+        echo($message);
+
         $this->mailer->send($message);
     }
 

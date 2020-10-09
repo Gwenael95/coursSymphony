@@ -4,14 +4,18 @@
     <div style="text-align: center">
         <h3>retirer assignation d'une équipe à un/des projets</h3>
         {{ form_start(formTeam) }}
-        <div>
-            {{ form_label(formTeam.teamName) }}<br>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">{{ form_label(formTeam.teamName) }}</label>
+            </div>
             {{ form_widget(formTeam.teamName) }}
         </div>
         {{ form_errors(formTeam.teamName) }}
 
-        <div>
-            {{ form_label(formTeam.name) }}<br>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">{{ form_label(formTeam.name) }}</label>
+            </div>
             {{ form_widget(formTeam.name) }}
         </div>
         {{ form_errors(formTeam.name) }}

@@ -1,11 +1,15 @@
 {% extends "Home/index.html.twig" %}
 {% block title %} {{ parent() }} - choix de l'equipe à modifier{% endblock %}
 {% block main %}
-    Sélectionner l'équipe à modifier.
-    {{ form_start(formTeam) }}
-
-    {{ form_row(formTeam.teamName) }}
-
-    <button type="submit" class="buttonArticle">Envoyer</button>
-    {{ form_end(formTeam) }}
+    <div style="text-align: center">
+        <h3>Sélectionner l'équipe à modifier</h3>
+        {{ form_start(formTeam) }}
+            <div>
+                {{ form_label(formTeam.teamName) }}<br>
+                {{ form_widget(formTeam.teamName) }}
+            </div>
+            {{ form_errors(formTeam.teamName) }}
+            <button type="submit" class="buttonArticle btn btn-primary">Envoyer</button>
+        {{ form_end(formTeam) }}
+    </div>
 {% endblock %}

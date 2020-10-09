@@ -1,11 +1,16 @@
 {% extends "Home/index.html.twig" %}
 {% block title %} {{ parent() }} - création de l'équipe{% endblock %}
 {% block main %}
-    Choisissez l'équipe à supprimer.
-    {{ form_start(formTeam) }}
+    <div style="text-align: center">
+        <h3>Choisissez l'équipe à supprimer.</h3>
+        {{ form_start(formTeam) }}
+            <div>
+            {{ form_label(formTeam.teamName) }}<br>
+            {{ form_widget(formTeam.teamName) }}
+            </div>
+            {{ form_errors(formTeam.teamName) }}
 
-    {{ form_row(formTeam.teamName) }}
-
-    <button type="submit" class="buttonArticle">Supprimer</button>
-    {{ form_end(formTeam) }}
+        <button type="submit" class="buttonArticle btn btn-primary">Supprimer</button>
+        {{ form_end(formTeam) }}
+    </div>
 {% endblock %}

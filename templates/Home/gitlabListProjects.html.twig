@@ -1,20 +1,23 @@
 {% extends "Home/index.html.twig" %}
 {% block title %} {{ parent() }} - liste des projets{% endblock %}
 {% block main %}
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">nom du projet</th>
-            <th scope="col">id</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for project in projects %}
+    <div style="text-align: center">
+        <h3>liste des projets</h3>
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>{{ project.name }}</td>
-                <td><span class="badge badge-primary badge-pill">{{ project.projectId }}</span></td>
+                <th scope="col">nom du projet</th>
+                <th scope="col">id</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for project in projects %}
+                <tr>
+                    <td>{{ project.name }}</td>
+                    <td><span class="badge badge-primary badge-pill">{{ project.projectId }}</span></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

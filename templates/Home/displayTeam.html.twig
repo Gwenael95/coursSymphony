@@ -1,20 +1,24 @@
 {% extends "Home/index.html.twig" %}
 {% block title %} {{ parent() }} - équipes{% endblock %}
 {% block main %}
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">nom de l'équipe</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for team in teams %}
+    <div style="text-align: center">
+        <h3>ensemble des équipes</h3>
+
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>{{ team.teamName }}</td>
+                <th scope="col">nom de l'équipe</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for team in teams %}
+                <tr>
+                    <td>{{ team.teamName }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 
 {% endblock %}

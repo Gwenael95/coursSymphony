@@ -13,6 +13,10 @@ class TeamSelectMultipleType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options){
-        $builder->add("teamName", EntityType::class, ["class"=>Team::class, "choice_label" => 'teamName', 'choice_value' => 'teamName',"multiple"=>true]);
+        $builder->add("teamName", EntityType::class, ["class"=>Team::class,
+            "choice_label" => 'teamName', 'choice_value' => 'teamName',"multiple"=>true,
+            'attr' => [
+                'class' => 'flexCenter'
+            ]]);
     }
 }

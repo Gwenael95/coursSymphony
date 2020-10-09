@@ -119,7 +119,7 @@ class GitlabController  extends AbstractController
     public function getProject( GitlabServices $gitlabServices): Response
     {
         $projects = $gitlabServices->getAllProjectInDB($this->getDoctrine()->getManager());
-        $content = $this->twig->render("Home/gitlabListProjects.html.twig", array("projects" => $projects));
+        $content = $this->twig->render("Home/listProjects.html.twig", array("projects" => $projects));
         return new Response($content);
     }
 }

@@ -79,7 +79,7 @@ class TeamController extends AbstractController
             $teamId = $gitlabServices->getTeamIdSelectMultiple($this->getDoctrine()->getManager(), $request->request->all());
             return $this->redirectToRoute('updateTeam', ["id"=>$teamId]);
         }
-        $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/setTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
 
@@ -102,7 +102,7 @@ class TeamController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $gitlabServices->updateTeam($this->getDoctrine()->getManager(), $id, $team);
         }
-        $content = $this->twig->render("Home/gitlabSetTeam.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/setTeam.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
 
@@ -152,7 +152,7 @@ class TeamController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $gitlabServices->assignTeamProject($this->getDoctrine()->getManager(),  $request->request->all());
         }
-        $content = $this->twig->render("Home/gitlabAssignProject.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/assignTeamProject.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
 
@@ -177,7 +177,7 @@ class TeamController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()){
             $gitlabServices->disassignProject($this->getDoctrine()->getManager(),  $request->request->all());
         }
-        $content = $this->twig->render("Home/gitlabDisassignProject.html.twig", array("formTeam"=>$form->createView()));
+        $content = $this->twig->render("Home/disassignProject.html.twig", array("formTeam"=>$form->createView()));
         return new Response($content);
     }
 }

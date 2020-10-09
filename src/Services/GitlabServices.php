@@ -214,6 +214,29 @@ class GitlabServices
         $entityManager->flush();
     }
 
+    /**
+     * this function assign team and projects and save this in database
+     * @param ObjectManager $entityManager
+     * @param $quest
+     */
+    public function disassignProject( ObjectManager $entityManager, $quest){
+        foreach($quest as $prop=>$qst){
+            if (isset($qst["teamName"])) {
+                $team = $entityManager->getRepository(Team::class)->findTeamByTeamName($qst["teamName"]);
+                $entityManager->persist($team);
+                if (isset($qst["name"])) {
+                    foreach ($qst["name"] as $projectName) {
+                        $newProject= $entityManager->getRepository(Project::class)->findProjectByprojectName($projectName);
+                        $newProject->removeTeam($team);
+                        $entityManager->persist($newProject);
+                    }
+                }
+            }
+        }
+        $entityManager->flush();
+    }
+
+
 
     /**
      * this function get all project members from API, thanks to a project id
@@ -285,6 +308,8 @@ class GitlabServices
                 'text/html'
             )
         ;
+
+        echo($message);
 
         $this->mailer->send($message);
     }

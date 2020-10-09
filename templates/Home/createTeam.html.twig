@@ -5,7 +5,13 @@
         <h3>Saisir le nom de la nouvelle l'équipe</h3>
         <br>
         {{ form_start(formTeam) }}
-        {{ form_row(formTeam.teamName) }}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">{{ form_label(formTeam.teamName) }}</label>
+            </div>
+            {{ form_widget(formTeam.teamName) }}
+        </div>
+        {{ form_errors(formTeam.teamName) }}
         <button type="submit" class="btn btn-primary">Ajouter</button>
         {{ form_end(formTeam) }}
     </div>

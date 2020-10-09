@@ -16,7 +16,7 @@ class TeamSelectMultipleType extends AbstractType
         $builder->add("teamName", EntityType::class, ["class"=>Team::class,
             "choice_label" => 'teamName', 'choice_value' => 'teamName',"multiple"=>true,
             'attr' => [
-                'class' => 'flexCenter'
+                'class' => 'custom-select '
             ]]);
     }
 }

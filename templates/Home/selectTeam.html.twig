@@ -5,10 +5,12 @@
         <h3>Choisissez l'équipe dont vous souhaitez voir les MR</h3>
 
         {{ form_start(formTeam) }}
-            <div>
-                {{ form_label(formTeam.teamName) }}<br>
-                {{ form_widget(formTeam.teamName) }}
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">{{ form_label(formTeam.teamName) }}</label>
             </div>
+            {{ form_widget(formTeam.teamName) }}
+        </div>
             {{ form_errors(formTeam.teamName) }}
 
             <button type="submit" class="buttonArticle btn btn-primary">Envoyer</button>

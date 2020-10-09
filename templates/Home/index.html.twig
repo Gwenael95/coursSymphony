@@ -10,7 +10,8 @@
         <style>
             .marginChild > a {margin: 5px; color: lightblue;transition: color ease .4s;}
             .marginChild > a:hover {color: white;}
-            .flexCenter{width: 20%;min-width: 200px;border: 2px darkslategrey groove;transition: background ease .4s;}
+            .flexCenter{width: 20%;min-width: 200px;border: 2px darkslategrey groove;transition: background ease .4s;
+            border-radius: 10px;box-shadow: rgb(50, 50, 50) 2px 2px;}
             .flexCenter:hover{background: hsl(187, 52%, 89%);}
         </style>
     </head>
@@ -22,24 +23,53 @@
                     <h1>#BalanceTaMR</h1>
                 </a>
                 <div class="collapse navbar-collapse marginChild">
-                    <a class="nav-link" href="{{ path('getMerges') }}">Les merges</a>
-                    <a class="nav-link" href="{{ path('getProject') }}">Les projets</a>
-                    <a class="nav-link" href="{{ path('assignProject') }}">Assigner des Projets</a>
-                    <a class="nav-link" href="{{ path('createTeam') }}">Créer équipe</a>
-
-                    <a href="{{ path('setTeam') }}">Mettre à jour équipe</a>
-                    <a href="{{ path('delTeam') }}">Supprimer équipe</a>
-                    <a href="{{ path('getTeam') }}">voir les équipes</a>
-                    <a href="{{ path('selectTeamMerges') }}">voir MR d'une équipe</a>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Projets
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{ path('getProject') }}">Les projets</a>
+                                <a class="dropdown-item" href="{{ path('assignProject') }}">Assigner des projets</a>
+                                <a class="dropdown-item" href="{{ path('disassignProject') }}">Supprimer un projet d'une équipe</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Equipes
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{ path('createTeam') }}">Créer équipe</a>
+                                <a class="dropdown-item" href="{{ path('setTeam') }}">Mettre à jour équipe</a>
+                                <a class="dropdown-item" href="{{ path('delTeam') }}">Supprimer équipe</a>
+                                <a class="dropdown-item" href="{{ path('getTeam') }}">Voir les équipes</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Merges
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{ path('getMerges') }}">Les merges</a>
+                                <a class="dropdown-item" href="{{ path('selectTeamMerges') }}">Voir MRs d'une équipe</a>
+                            </div>
+                        </li>
+                    </ul>
 
                 </div>
             </nav>
         </header>
         <main>
+            <div class="container-sm">
+
             {% block main %} {% endblock %}
+            </div>
         </main>
         <footer>
             {% block footer %}{% endblock %}
         </footer>
     </body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </html>

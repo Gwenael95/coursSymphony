@@ -14,11 +14,11 @@ use Laminas\Code\Reflection\MethodReflection;
 class MethodGenerator extends ZendMethodGenerator
 {
     /**
-     * @return static
+     * {@inheritDoc}
      */
     public static function fromReflectionWithoutBodyAndDocBlock(MethodReflection $reflectionMethod) : self
     {
-        /** @var static $method */
+        /** @var self $method */
         $method = parent::copyMethodSignature($reflectionMethod);
 
         $method->setInterface(false);

@@ -15,7 +15,7 @@ class TeamSelectUniqueType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options){
         $builder->add("teamName", EntityType::class,
-            ["class"=>Team::class, "choice_label" => 'teamName', 'choice_value' => 'teamName', "data_class" => null]);
+            ["class"=>Team::class, "choice_label" => 'teamName', 'choice_value' => 'teamName', "data_class" => null, 'attr' => ['class' => 'custom-select'] ]);
     }
 
 }

@@ -31,6 +31,24 @@ class GitlabController  extends AbstractController
 
 
     /**
+     * this function get all merges from our projects
+     * @Route("/getMerges",  name="getMerges")
+     * @param GitlabServices $gitlabServices
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function getMerges( GitlabServices $gitlabServices): Response
+    {
+        //$gitlabServices->getAllMemberFromProject(21522457);
+        $merges = $gitlabServices->getAllMergesDetails();
+        $content = $this->twig->render("Home/displayAllMerges.html.twig", array("merges" => $merges));
+        return new Response($content);
+    }
+    
+
+    /**
      * this function will select the team to display their merge requests,
      * redirect to getMergesByTeam/id with team id
      * @Route("/selectTeamMerges",  name="selectTeamMerges")
@@ -74,54 +92,4 @@ class GitlabController  extends AbstractController
     }
 
 
-    /**
-     * this function get all merges from our projects
-     * @Route("/getMerges",  name="getMerges")
-     * @param GitlabServices $gitlabServices
-     * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
-    public function getMerges( GitlabServices $gitlabServices): Response
-    {
-        //$gitlabServices->getAllMemberFromProject(21522457);
-        $merges = $gitlabServices->getAllMergesDetails();
-        $content = $this->twig->render("Home/displayAllMerges.html.twig", array("merges" => $merges));
-        return new Response($content);
-    }
-
-
-    /**
-     * this function display a team list from database
-     * @Route("/getTeam", methods={"GET"} , name="getTeam")
-     * @param TeamServices $teamServices
-     * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
-    public function getTeam(TeamServices $teamServices): Response
-    {
-        $teams = $teamServices->getAllTeam($this->getDoctrine()->getManager());
-        $content = $this->twig->render("Home/displayTeam.html.twig", ["teams" =>  $teams] );
-        return new Response($content);
-    }
-
-
-    /**
-     * this function list only all projects in database
-     * @Route("/getProject",  name="getProject")
-     * @param GitlabServices $gitlabServices
-     * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
-    public function getProject( GitlabServices $gitlabServices): Response
-    {
-        $projects = $gitlabServices->getAllProjectInDB($this->getDoctrine()->getManager());
-        $content = $this->twig->render("Home/listProjects.html.twig", array("projects" => $projects));
-        return new Response($content);
-    }
 }

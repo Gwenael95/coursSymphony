@@ -132,54 +132,21 @@ class TeamController extends AbstractController
         return new Response($content);
     }
 
-
     /**
-     * this function allow to assign project to a team
-     * @Route("/assignProject",  name="assignProject")
-     * @param Request $request
-     * @param GitlabServices $gitlabServices
+     * this function display a team list from database
+     * @Route("/getTeam", methods={"GET"} , name="getTeam")
      * @param TeamServices $teamServices
      * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function assignProject(Request $request, GitlabServices $gitlabServices, TeamServices $teamServices): Response
+    public function getTeam(TeamServices $teamServices): Response
     {
-        $gitlabServices->updateProject($this->getDoctrine()->getManager());
-        $team = new Team();
-        $project = new Project();
-        $form=$this->createForm(TeamProjectAssignType::class, [$team, $project]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
-            $teamServices->assignTeamProject($this->getDoctrine()->getManager(),  $request->request->all());
-        }
-        $content = $this->twig->render("Home/assignTeamProject.html.twig", array("formTeam"=>$form->createView()));
+        $teams = $teamServices->getAllTeam($this->getDoctrine()->getManager());
+        $content = $this->twig->render("Home/displayTeam.html.twig", ["teams" =>  $teams] );
         return new Response($content);
     }
 
 
-    /**
-     * this function allow to disassign project to a team
-     * @Route("/disassignProject",  name="disassignProject")
-     * @param Request $request
-     * @param GitlabServices $gitlabServices
-     * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
-    public function disassignProject(Request $request, GitlabServices $gitlabServices, TeamServices $teamServices): Response
-    {
-        $gitlabServices->updateProject($this->getDoctrine()->getManager());
-        $team = new Team();
-        $project = new Project();
-        $form=$this->createForm(TeamProjectAssignType::class, [$team, $project]);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
-            $teamServices->disassignProject($this->getDoctrine()->getManager(),  $request->request->all());
-        }
-        $content = $this->twig->render("Home/disassignProject.html.twig", array("formTeam"=>$form->createView()));
-        return new Response($content);
-    }
 }
